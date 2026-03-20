@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visionary Junior School — v3.0</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="api.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --f:#0e2d1e;--fm:#163d28;--fl:#1e5236;
+  --g:#c9a84c;--gb:#e4c46e;--gp:rgba(201,168,76,.1);
+  --w:#fff;--cr:#f8f4ef;--bg:#eef2ef;
+  --td:#0a1f13;--tm:#2e4d38;--tl:#5a7a63;--tmu:#8aa892;
+  --bd:rgba(14,45,30,.08);--bdm:rgba(14,45,30,.14);
+  --bs:0 1px 8px rgba(14,45,30,.07);--bm:0 4px 20px rgba(14,45,30,.11);
+  --r:8px;--rl:14px;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--td);min-height:100vh;font-size:14px;}
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--f);}
+.login-box{background:var(--w);border-radius:24px;padding:44px 40px;width:100%;max-width:440px;}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-icon{width:56px;height:56px;background:var(--f);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.login-icon i{font-size:26px;color:var(--g);}
+.login-title{font-size:21px;font-weight:700;color:var(--f);}
+.login-sub{font-size:13px;color:var(--tmu);margin-top:4px;}
+.fl{margin-bottom:16px;}
+.fl label{display:block;font-size:11.5px;font-weight:600;color:var(--tm);letter-spacing:.4px;margin-bottom:5px;text-transform:uppercase;}
+.fl input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--td);background:var(--cr);outline:none;transition:border .2s;}
+.fl input:focus{border-color:var(--g);background:var(--w);}
+.role-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px;}
+.role-tab{padding:9px 6px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--cr);cursor:pointer;text-align:center;font-size:11.5px;font-weight:600;color:var(--tl);transition:all .2s;font-family:inherit;}
+.role-tab i{display:block;font-size:16px;margin-bottom:4px;}
+.role-tab.sel{background:var(--f);color:var(--g);border-color:var(--f);}
+.btn-login{width:100%;padding:13px;border-radius:50px;background:var(--f);color:#fff;border:none;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;}
+.login-error{background:#fde8e8;color:#9b2626;border-radius:var(--r);padding:10px 14px;font-size:13px;margin-top:12px;display:none;}
+.demo-hint{text-align:center;margin-top:14px;font-size:12px;color:var(--tmu);}
+/* SHELL */
+#appShell{display:none;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:232px;background:var(--f);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex-shrink:0;}
+.sb-head{padding:20px 16px 16px;border-bottom:1px solid rgba(201,168,76,.12);}
+.sb-logo-row{display:flex;align-items:center;gap:10px;}
+.sb-logo-icon{width:36px;height:36px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-logo-icon i{font-size:18px;color:var(--f);}
+.sb-logo-name{font-size:13px;font-weight:700;color:#fff;line-height:1.25;}
+.sb-logo-tag{font-size:9px;color:var(--g);letter-spacing:1.5px;text-transform:uppercase;}
+.sb-role-badge{display:inline-flex;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--g);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:50px;margin-top:9px;}
+.sb-nav{padding:12px 8px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:1px;}
+.nav-sec{font-size:9px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:1.5px;text-transform:uppercase;padding:9px 10px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:var(--r);cursor:pointer;color:rgba(255,255,255,.48);font-size:12.5px;font-weight:500;border:none;background:none;text-align:left;width:100%;transition:all .18s;}
+.nav-item i{width:15px;text-align:center;font-size:13px;}
+.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.nav-item.active{background:var(--g);color:var(--f);font-weight:700;}
+.sb-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.05);}
+.sb-user{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.sb-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--g);color:var(--f);}
+.sb-uname{font-size:12px;color:rgba(255,255,255,.85);font-weight:600;}
+.sb-urole{font-size:10.5px;color:rgba(255,255,255,.32);}
+.logout-btn{width:100%;padding:7px;border-radius:var(--r);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.4);font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+.logout-btn:hover{background:rgba(201,168,76,.15);color:var(--g);}
+/* TOPBAR */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:var(--w);border-bottom:1px solid var(--bd);padding:0 22px;display:flex;align-items:center;justify-content:space-between;height:56px;flex-shrink:0;position:relative;z-index:50;}
+.topbar-title{font-size:15px;font-weight:700;color:var(--f);}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.notif-btn{position:relative;width:34px;height:34px;border-radius:50%;background:var(--cr);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tm);}
+.notif-badge{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:8px;background:#e74c3c;color:#fff;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;padding:0 3px;}
+.notif-panel{position:absolute;top:56px;right:14px;width:330px;background:var(--w);border:1px solid var(--bd);border-radius:var(--rl);box-shadow:var(--bm);z-index:200;display:none;}
+.notif-panel.open{display:block;}
+.notif-ph{padding:12px 15px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.notif-ph-t{font-size:13px;font-weight:700;color:var(--f);}
+.notif-item{padding:11px 15px;border-bottom:1px solid rgba(14,45,30,.04);cursor:pointer;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item:hover{background:var(--cr);}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--g);flex-shrink:0;display:inline-block;margin-right:8px;}
+/* CONTENT */
+.content{flex:1;padding:22px;overflow-y:auto;}
+/* CARDS */
+.card{background:var(--w);border-radius:var(--rl);padding:18px;border:1px solid var(--bd);box-shadow:var(--bs);margin-bottom:14px;}
+.card-hd{font-size:13px;font-weight:700;color:var(--f);margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.card-hd a{font-size:11px;color:var(--g);font-weight:600;cursor:pointer;}
+/* STATS */
+.sg{display:grid;gap:12px;margin-bottom:16px;}
+.s4{grid-template-columns:repeat(4,1fr);}
+.s3{grid-template-columns:repeat(3,1fr);}
+.s2{grid-template-columns:repeat(2,1fr);}
+.sc{background:var(--w);border-radius:var(--rl);padding:18px 16px;border:1px solid var(--bd);box-shadow:var(--bs);}
+.stl{font-size:10.5px;color:var(--tmu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;}
+.stv{font-size:24px;font-weight:700;color:var(--f);line-height:1;}
+.sts{font-size:11px;color:var(--tl);margin-top:4px;}
+.sti{float:right;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.ic-g{background:rgba(201,168,76,.12);}.ic-f{background:rgba(14,45,30,.08);}
+.ic-g i{color:var(--g);font-size:15px;}.ic-f i{color:var(--fl);font-size:15px;}
+/* CLASS TABS */
+.ctabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.ctab{padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--w);color:var(--tm);transition:all .15s;font-family:inherit;}
+.ctab:hover{border-color:var(--g);color:var(--f);}
+.ctab.active{background:var(--f);color:#fff;border-color:var(--f);}
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--tmu);font-weight:700;padding:8px 12px;text-align:left;border-bottom:1.5px solid var(--bd);}
+td{padding:10px 12px;font-size:12.5px;color:var(--tm);border-bottom:1px solid rgba(14,45,30,.04);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(14,45,30,.012);}
+.ac{display:flex;align-items:center;gap:8px;}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;background:var(--cr);color:var(--f);border:1.5px solid var(--bd);overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.an{font-weight:600;color:var(--f);font-size:12.5px;}
+.as{font-size:11px;color:var(--tmu);}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:50px;font-size:10.5px;font-weight:600;}
+.bg-green{background:#e7f4ee;color:#1a6b3c;}
+.bg-amber{background:#fef3e2;color:#8a5c0a;}
+.bg-red{background:#fde8e8;color:#9b2626;}
+.bg-blue{background:#e6f1fb;color:#1a4fa0;}
+.bg-purple{background:#f0ebff;color:#5b21b6;}
+.bg-gray{background:#f0f0ee;color:#555;}
+/* BTN */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .18s;white-space:nowrap;}
+.btn i{font-size:11px;}
+.bg{background:var(--g);color:var(--f);}.bg:hover{background:var(--gb);}
+.bf{background:var(--f);color:#fff;}.bf:hover{background:var(--fm);}
+.bo{background:transparent;color:var(--f);border:1.5px solid var(--bdm);}.bo:hover{background:var(--cr);}
+.btn-sm{padding:4px 11px;font-size:11px;}
+.btn-xs{padding:3px 8px;font-size:10.5px;}
+.abt{width:26px;height:26px;border-radius:6px;background:var(--cr);border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--tm);transition:all .15s;margin-right:2px;}
+.abt:hover{background:var(--f);color:#fff;}
+.abt i{font-size:11px;}
+/* FORM */
+.fg{display:grid;gap:12px;}
+.fg2{grid-template-columns:1fr 1fr;}
+.fg3{grid-template-columns:1fr 1fr 1fr;}
+.ff{display:flex;flex-direction:column;gap:4px;}
+.ff label{font-size:11px;font-weight:600;color:var(--tm);text-transform:uppercase;letter-spacing:.3px;}
+.ff input,.ff select,.ff textarea{padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;color:var(--td);background:var(--cr);outline:none;font-family:inherit;transition:border .2s;}
+.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--g);background:var(--w);}
+.ff textarea{min-height:75px;resize:vertical;}
+.fa{display:flex;gap:9px;justify-content:flex-end;margin-top:5px;}
+/* MISC */
+.prog{height:5px;background:rgba(14,45,30,.08);border-radius:3px;overflow:hidden;margin-top:4px;}
+.prog-f{height:100%;border-radius:3px;background:var(--g);}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd);}
+.ir:last-child{border-bottom:none;}
+.irl{font-size:11.5px;color:var(--tmu);}
+.irv{font-size:13px;font-weight:600;color:var(--f);}
+.notice{background:var(--cr);border-radius:var(--rl);padding:13px 15px;border-left:3px solid var(--g);margin-bottom:9px;}
+.notice-title{font-size:12.5px;font-weight:700;color:var(--f);}
+.notice-date{font-size:10.5px;color:var(--tmu);margin-top:3px;}
+.sr{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+.sl{font-size:12.5px;font-weight:600;color:var(--f);width:95px;flex-shrink:0;}
+.sb{flex:1;height:8px;background:rgba(14,45,30,.08);border-radius:4px;overflow:hidden;}
+.sf{height:100%;border-radius:4px;}
+.sn{font-size:12.5px;font-weight:700;color:var(--f);width:32px;text-align:right;}
+.loader{text-align:center;padding:36px;color:var(--tmu);font-size:13px;}
+.loader i{font-size:22px;animation:spin 1s linear infinite;display:block;margin-bottom:9px;color:var(--g);}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--f);color:#fff;padding:11px 18px;border-radius:var(--rl);font-size:13px;font-weight:600;z-index:9999;display:none;align-items:center;gap:9px;box-shadow:var(--bm);}
+.toast.show{display:flex;}
+.toast.err{background:#9b2626;}
+.toast-dot{width:7px;height:7px;border-radius:50%;background:var(--g);}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:999;}
+.mo.open{display:flex;}
+.modal{background:var(--w);border-radius:20px;padding:26px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;}
+.mhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.mhd-t{font-size:15px;font-weight:700;color:var(--f);}
+.mhd-x{width:28px;height:28px;border-radius:50%;background:var(--cr);border:none;cursor:pointer;font-size:15px;color:var(--tl);}
+/* ATTENDANCE */
+.att-row{display:flex;align-items:center;gap:9px;padding:9px 13px;background:var(--cr);border-radius:var(--r);border:1px solid var(--bd);margin-bottom:7px;}
+.att-n{flex:1;font-size:12.5px;font-weight:600;color:var(--f);}
+.att-btn{padding:4px 11px;border-radius:50px;border:1.5px solid var(--bd);background:transparent;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.att-p.sel{background:#1a6b3c;color:#fff;border-color:#1a6b3c;}
+.att-l.sel{background:#8a5c0a;color:#fff;border-color:#8a5c0a;}
+.att-a.sel{background:#9b2626;color:#fff;border-color:#9b2626;}
+/* TIMETABLE */
+.tt-cell{background:var(--gp);border-radius:5px;padding:4px 7px;font-size:11px;font-weight:600;color:var(--f);cursor:pointer;min-height:32px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid rgba(201,168,76,.2);}
+.tt-empty{background:rgba(14,45,30,.03);border-radius:5px;min-height:32px;cursor:pointer;border:1.5px dashed rgba(14,45,30,.1);display:flex;align-items:center;justify-content:center;color:var(--tmu);font-size:11px;}
+.tt-empty:hover{border-color:var(--g);background:var(--gp);}
+/* RECEIPT */
+.receipt{background:var(--w);border:2px solid var(--f);border-radius:var(--rl);padding:26px;max-width:400px;margin:0 auto;}
+.r-hd{text-align:center;border-bottom:2px dashed var(--bd);padding-bottom:14px;margin-bottom:14px;}
+.r-logo{font-size:18px;font-weight:700;color:var(--f);}
+.r-sub{font-size:11px;color:var(--tmu);}
+.r-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12.5px;}
+.r-total{border-top:2px solid var(--f);margin-top:9px;padding-top:9px;font-weight:700;font-size:14px;}
+.r-stamp{text-align:center;margin-top:14px;padding:9px;background:var(--cr);border-radius:var(--r);}
+/* GRADE COLORS */
+.g-dist{color:#1a6b3c;}.g-credit{color:#1a4fa0;}.g-pass{color:#8a5c0a;}.g-fail{color:#9b2626;}
+/* REPORT CARD */
+.rc{background:var(--w);border:2px solid var(--f);border-radius:var(--rl);padding:28px;max-width:560px;margin:0 auto;}
+.rc-hd{text-align:center;padding-bottom:16px;margin-bottom:16px;border-bottom:3px double var(--g);}
+.rc-school{font-size:20px;font-weight:700;color:var(--f);}
+.rc-motto{font-size:11px;color:var(--g);letter-spacing:1px;text-transform:uppercase;}
+.rc-title{font-size:14px;font-weight:700;color:var(--f);margin-top:10px;border:1px solid var(--bd);padding:5px 20px;border-radius:50px;display:inline-block;}
+.rc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;}
+.rc-info-item{padding:7px 13px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.rc-info-item:nth-child(even){border-right:none;}
+.rc-il{font-size:10px;color:var(--tmu);text-transform:uppercase;}
+.rc-iv{font-size:12.5px;font-weight:600;color:var(--f);}
+.rc-table th{background:var(--f);color:var(--g);}
+.rc-comment{margin-top:14px;padding:12px 14px;background:var(--cr);border-radius:var(--r);border-left:3px solid var(--g);}
+.rc-sig{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:20px;text-align:center;}
+.rc-sig-line{border-top:1px solid var(--f);padding-top:5px;font-size:11px;color:var(--tmu);}
+/* EVENTS */
+.ev-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd);}
+.ev-item:last-child{border-bottom:none;}
+.ev-date-box{width:44px;flex-shrink:0;text-align:center;background:var(--f);border-radius:var(--r);padding:6px 4px;}
+.ev-day{font-size:18px;font-weight:700;color:var(--g);line-height:1;}
+.ev-mon{font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;}
+.ev-body{flex:1;}
+.ev-title{font-size:13px;font-weight:700;color:var(--f);}
+.ev-desc{font-size:11.5px;color:var(--tmu);margin-top:2px;}
+/* PAYROLL */
+.pay-status-paid{color:#1a6b3c;font-weight:700;}
+.pay-status-pending{color:#8a5c0a;font-weight:700;}
+/* PHOTO UPLOAD */
+.photo-upload{width:80px;height:80px;border-radius:50%;border:2px dashed var(--g);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;background:var(--cr);}
+.photo-upload img{width:100%;height:100%;object-fit:cover;}
+.photo-upload span{font-size:11px;color:var(--tmu);text-align:center;}
+/* PARENT PORTAL */
+.parent-hero{background:linear-gradient(135deg,var(--f),var(--fl));border-radius:var(--rl);padding:24px;margin-bottom:16px;color:#fff;}
+/* GRADING */
+.grade-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.grade-row:last-child{border-bottom:none;}
+/* SETTINGS */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--bd);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:13px;font-weight:600;color:var(--f);}
+.setting-desc{font-size:11.5px;color:var(--tmu);margin-top:2px;}
+/* ANALYTICS */
+.chart-bar-wrap{display:flex;align-items:flex-end;gap:8px;height:120px;margin-bottom:8px;}
+.chart-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--f),var(--fl));transition:height .4s;}
+.chart-label{font-size:10px;color:var(--tmu);text-align:center;}
+@media print{.sidebar,.topbar,.fa,.abt,.btn,.mo-footer{display:none!important;}.mo{position:static;background:none;}.modal{max-height:none;box-shadow:none;}}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-icon"><i class="fas fa-graduation-cap"></i></div>
+      <div class="login-title">Visionary Junior School</div>
+      <div class="login-sub">School Management System v3.0</div>
+    </div>
+    <div class="fl"><label>Email</label><input id="lEmail" type="email" placeholder="your@email.com"></div>
+    <div class="fl"><label>Password</label><input id="lPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div style="margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:600;color:var(--tm);letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px;">Login As</div>
+      <div class="role-tabs">
+        <button class="role-tab sel" onclick="fillD('admin',this)"><i class="fas fa-shield-alt"></i>Admin</button>
+        <button class="role-tab" onclick="fillD('teacher',this)"><i class="fas fa-chalkboard-teacher"></i>Teacher</button>
+        <button class="role-tab" onclick="fillD('student',this)"><i class="fas fa-user-graduate"></i>Student</button>
+        <button class="role-tab" onclick="fillD('parent',this)"><i class="fas fa-users"></i>Parent</button>
+      </div>
+    </div>
+    <button class="btn-login" id="lBtn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="lErr"></div>
+    <div class="demo-hint">Click a role to fill demo credentials</div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appShell">
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-head">
+        <div class="sb-logo-row">
+          <div class="sb-logo-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div><div class="sb-logo-name">Visionary School</div><div class="sb-logo-tag">v3.0</div></div>
+        </div>
+        <div class="sb-role-badge" id="roleBadge"></div>
+      </div>
+      <nav class="sb-nav" id="sideNav"></nav>
+      <div class="sb-foot">
+        <div class="sb-user">
+          <div class="sb-av" id="sbAv"></div>
+          <div><div class="sb-uname" id="sbName"></div><div class="sb-urole" id="sbRole"></div></div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+      </div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="pgTitle">Dashboard</div>
+        <div class="topbar-right">
+          <div class="notif-btn" onclick="toggleNotif()"><i class="fas fa-bell"></i><div class="notif-badge" id="nBadge"></div></div>
+        </div>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-ph"><div class="notif-ph-t">Notifications</div><span style="font-size:11px;color:var(--g);cursor:pointer;font-weight:600" onclick="markAllRead()">Mark all read</span></div>
+          <div id="nList"></div>
+        </div>
+      </div>
+      <div class="content" id="mainContent"><div class="loader"><i class="fas fa-spinner"></i>Loading...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="MO" onclick="if(event.target===this)closeModal()">
+  <div class="modal"><div class="mhd"><div class="mhd-t" id="MT"></div><button class="mhd-x" onclick="closeModal()">&#10005;</button></div><div id="MB"></div></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg"></span></div>
+
+<script>
+/* ══════════════════════ CONSTANTS ══════════════════════ */
+const DEMO={
+  admin:{email:'admin@visionary.ug',password:'visionary123'},
+  teacher:{email:'m.obed@visionary.ug',password:'visionary123'},
+  student:{email:'kato.oliver@visionary.ug',password:'visionary123'},
+  parent:{email:'parent@visionary.ug',password:'visionary123'},
+};
+const ALL_CLASSES=['P7A','P7B','P6A','P6B','P5A','P4C','P3B','P1A'];
+const SUBJECTS=[{id:1,name:'English'},{id:2,name:'Mathematics'},{id:3,name:'Science'},{id:4,name:'SST'},{id:5,name:'Luganda'},{id:6,name:'Religion'}];
+const GRADING=[
+  {label:'Distinction',min:80,max:100,color:'#1a6b3c',bg:'#e7f4ee'},
+  {label:'Credit',min:65,max:79,color:'#1a4fa0',bg:'#e6f1fb'},
+  {label:'Pass',min:50,max:64,color:'#8a5c0a',bg:'#fef3e2'},
+  {label:'Fail',min:0,max:49,color:'#9b2626',bg:'#fde8e8'},
+];
+
+const NAV={
+  admin:[
+    {sec:'Overview',items:[
+      {id:'aDash',icon:'fa-th-large',label:'Dashboard'},
+      {id:'aAnalytics',icon:'fa-chart-bar',label:'Analytics'},
+      {id:'aNotices',icon:'fa-bell',label:'Notice Board'},
+      {id:'aEvents',icon:'fa-calendar-alt',label:'Events Calendar'},
+    ]},
+    {sec:'People',items:[
+      {id:'aStudents',icon:'fa-users',label:'Students'},
+      {id:'aTeachers',icon:'fa-chalkboard-teacher',label:'Teachers'},
+    ]},
+    {sec:'Academics',items:[
+      {id:'aMarks',icon:'fa-file-alt',label:'Marks & Results'},
+      {id:'aAttendance',icon:'fa-check-circle',label:'Attendance'},
+      {id:'aTimetable',icon:'fa-calendar-week',label:'Class Timetable'},
+      {id:'aExamTT',icon:'fa-edit',label:'Exam Timetable'},
+      {id:'aReportCards',icon:'fa-file-invoice',label:'Report Cards'},
+    ]},
+    {sec:'Finance',items:[
+      {id:'aFees',icon:'fa-dollar-sign',label:'Fees Management'},
+      {id:'aBursar',icon:'fa-receipt',label:'Bursar Panel'},
+      {id:'aPayroll',icon:'fa-money-bill-wave',label:'Staff Payroll'},
+    ]},
+    {sec:'System',items:[
+      {id:'aSettings',icon:'fa-cog',label:'Settings'},
+    ]},
+  ],
+  teacher:[
+    {sec:'Overview',items:[
+      {id:'tDash',icon:'fa-th-large',label:'My Dashboard'},
+      {id:'tTimetable',icon:'fa-calendar-week',label:'My Timetable'},
+    ]},
+    {sec:'Classroom',items:[
+      {id:'tAttendance',icon:'fa-check-circle',label:'Take Attendance'},
+      {id:'tMarks',icon:'fa-file-alt',label:'Enter Marks'},
+      {id:'tResults',icon:'fa-chart-bar',label:'Class Results'},
+      {id:'tReportCards',icon:'fa-file-invoice',label:'Report Cards'},
+    ]},
+    {sec:'School',items:[
+      {id:'tNotices',icon:'fa-bell',label:'Notice Board'},
+      {id:'tEvents',icon:'fa-calendar-alt',label:'Events'},
+    ]},
+  ],
+  student:[
+    {sec:'My Portal',items:[
+      {id:'sDash',icon:'fa-th-large',label:'Dashboard'},
+      {id:'sResults',icon:'fa-file-alt',label:'My Results'},
+      {id:'sAttendance',icon:'fa-check-circle',label:'My Attendance'},
+      {id:'sFees',icon:'fa-dollar-sign',label:'Fee Status'},
+      {id:'sNotices',icon:'fa-bell',label:'Notice Board'},
+      {id:'sEvents',icon:'fa-calendar-alt',label:'Events'},
+      {id:'sProfile',icon:'fa-user',label:'My Profile'},
+    ]},
+  ],
+  parent:[
+    {sec:"My Child's Portal",items:[
+      {id:'pDash',icon:'fa-th-large',label:'Overview'},
+      {id:'pResults',icon:'fa-file-alt',label:'Academic Results'},
+      {id:'pAttendance',icon:'fa-check-circle',label:'Attendance'},
+      {id:'pFees',icon:'fa-dollar-sign',label:'Fee Status'},
+      {id:'pNotices',icon:'fa-bell',label:'Notices'},
+      {id:'pEvents',icon:'fa-calendar-alt',label:'Events'},
+    ]},
+  ],
+};
+
+/* ══════════════════════ HELPERS ══════════════════════ */
+function fillD(role,btn){document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('sel'));btn.classList.add('sel');document.getElementById('lEmail').value=DEMO[role].email;document.getElementById('lPass').value=DEMO[role].password;}
+function toast(msg,err=false){const el=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;el.className='toast show'+(err?' err':'');setTimeout(()=>el.className='toast',3200);}
+function openModal(title,html){document.getElementById('MT').textContent=title;document.getElementById('MB').innerHTML=html;document.getElementById('MO').classList.add('open');}
+function closeModal(){document.getElementById('MO').classList.remove('open');}
+function ini(n){return(n||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+function fmtUGX(n){return'UGX '+parseInt(n||0).toLocaleString();}
+function today(){return new Date().toISOString().split('T')[0];}
+function getGrade(score){return GRADING.find(g=>score>=g.min&&score<=g.max)||GRADING[3];}
+function gradeBadge(score){const g=getGrade(score);return`<span class="badge" style="background:${g.bg};color:${g.color}">${g.label}</span>`;}
+function gradeLabel(score){return getGrade(score).label;}
+function feeStatus(due,paid){return paid>=due?'Paid':paid>0?'Partial':'Unpaid';}
+function fBadge(s){return s==='Paid'?'bg-green':s==='Partial'?'bg-amber':'bg-red';}
+function sBadge(s){return s==='Active'?'bg-green':'bg-amber';}
+function scoreColor(s){return s>=80?'#1a6b3c':s>=65?'#1a4fa0':s>=50?'#8a5c0a':'#9b2626';}
+
+/* CLASS TABS - FIXED VERSION */
+function cTabs(list,active,containerId,renderFn){
+  return`<div class="ctabs" id="tabs_${containerId}">${['All',...list].map(c=>`<button class="ctab${c===active?' active':''}" data-val="${c}" onclick="handleTab(this,'${containerId}',${renderFn})">${c}</button>`).join('')}</div>`;
+}
+function handleTab(btn,containerId,fn){
+  document.querySelectorAll(`#tabs_${containerId} .ctab`).forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  fn(btn.dataset.val);
+}
+// Simple tab builder — pass render function name as string
+function buildTabs(classes,activeClass,onClickFnStr){
+  return`<div class="ctabs">${['All',...classes].map(c=>`<button class="ctab${c===activeClass?' active':''}" onclick="document.querySelectorAll('.ctabs .ctab').forEach(t=>t.classList.remove('active'));this.classList.add('active');${onClickFnStr}('${c}')">${c}</button>`).join('')}</div>`;
+}
+
+/* ══════════════════════ AUTH ══════════════════════ */
+async function doLogin(){
+  const email=document.getElementById('lEmail').value.trim();
+  const pass=document.getElementById('lPass').value;
+  const btn=document.getElementById('lBtn');
+  const err=document.getElementById('lErr');
+  if(!email||!pass){err.textContent='Enter email and password.';err.style.display='block';return;}
+  // Handle parent demo locally (no backend endpoint)
+  if(email===DEMO.parent.email&&pass===DEMO.parent.password){
+    localStorage.setItem('vsToken','demo-parent');
+    localStorage.setItem('vsUser',JSON.stringify({role:'parent',fullName:'Mrs. Sarah Kato',email}));
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appShell').style.display='block';
+    buildShell({role:'parent',fullName:'Mrs. Sarah Kato',email});
+    loadNotifs();return;
+  }
+  btn.disabled=true;btn.textContent='Signing in...';err.style.display='none';
+  try{
+    const data=await Auth.login(email,pass);
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appShell').style.display='block';
+    buildShell(data.user);loadNotifs();
+  }catch(e){err.textContent=e.message||'Login failed.';err.style.display='block';}
+  finally{btn.disabled=false;btn.textContent='Sign In';}
+}
+function doLogout(){Auth.logout();document.getElementById('appShell').style.display='none';document.getElementById('loginScreen').style.display='flex';}
+
+/* ══════════════════════ SHELL ══════════════════════ */
+function buildShell(user){
+  const role=user.role;
+  document.getElementById('roleBadge').textContent=role.charAt(0).toUpperCase()+role.slice(1);
+  document.getElementById('sbAv').textContent=ini(user.fullName||user.email);
+  document.getElementById('sbName').textContent=user.fullName||user.email;
+  document.getElementById('sbRole').textContent=role;
+  const nav=document.getElementById('sideNav');nav.innerHTML='';
+  (NAV[role]||[]).forEach(sec=>{
+    const s=document.createElement('div');s.className='nav-sec';s.textContent=sec.sec;nav.appendChild(s);
+    sec.items.forEach(item=>{
+      const b=document.createElement('button');b.className='nav-item';
+      b.innerHTML=`<i class="fas ${item.icon}"></i>${item.label}`;
+      b.dataset.id=item.id;b.dataset.label=item.label;
+      b.onclick=()=>navTo(item.id,item.label,b);
+      nav.appendChild(b);
+    });
+  });
+  const firstItem=NAV[role][0].items[0];
+  document.querySelector('.nav-item')?.classList.add('active');
+  document.getElementById('pgTitle').textContent=firstItem.label;
+  renderPage(firstItem.id);
+}
+function navTo(id,label,btn){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('pgTitle').textContent=label;
+  renderPage(id);
+}
+function renderPage(id){
+  const c=document.getElementById('mainContent');
+  c.innerHTML='<div class="loader"><i class="fas fa-spinner"></i>Loading...</div>';
+  const map={
+    aDash,aAnalytics,aNotices,aEvents,aStudents,aTeachers,aMarks,aAttendance,aTimetable,aExamTT,aReportCards,aFees,aBursar,aPayroll,aSettings,
+    tDash,tTimetable,tAttendance,tMarks,tResults,tReportCards,tNotices,tEvents,
+    sDash,sResults,sAttendance,sFees,sNotices,sEvents,sProfile,
+    pDash,pResults,pAttendance,pFees,pNotices,pEvents,
+  };
+  if(map[id])map[id](c); else c.innerHTML=`<div class="loader">Page not found</div>`;
+}
+
+/* ══════════════════════ NOTIFICATIONS ══════════════════════ */
+let _notifs=[];
+async function loadNotifs(){
+  try{const n=await Notices.list();_notifs=n.slice(0,6).map(x=>({id:x.id,title:x.title,sub:new Date(x.created_at).toDateString(),read:false}));renderNotifs();}catch(e){}
+}
+function renderNotifs(){
+  const u=_notifs.filter(n=>!n.read).length;
+  const b=document.getElementById('nBadge');b.textContent=u;b.style.display=u?'flex':'none';
+  document.getElementById('nList').innerHTML=_notifs.length
+    ?_notifs.map(n=>`<div class="notif-item" onclick="readN(${n.id})"><div style="display:flex;align-items:center">${!n.read?`<span class="notif-dot"></span>`:'<span style="width:15px"></span>'}<div><div style="font-size:12.5px;font-weight:600;color:var(--f)">${n.title}</div><div style="font-size:11px;color:var(--tmu)">${n.sub}</div></div></div></div>`).join('')
+    :'<div style="padding:14px;text-align:center;color:var(--tmu);font-size:12.5px">No notifications</div>';
+}
+function toggleNotif(){document.getElementById('notifPanel').classList.toggle('open');}
+function readN(id){_notifs=_notifs.map(n=>n.id===id?{...n,read:true}:n);renderNotifs();}
+function markAllRead(){_notifs=_notifs.map(n=>({...n,read:true}));renderNotifs();}
+document.addEventListener('click',e=>{if(!e.target.closest('.notif-btn')&&!e.target.closest('.notif-panel'))document.getElementById('notifPanel')?.classList.remove('open');});
+
+/* ══════════════════════ SHARED COMPONENTS ══════════════════════ */
+// Student photo map (simulated)
+const photoMap={};
+function getAvatar(id,name){return photoMap[id]?`<img src="${photoMap[id]}" alt="${name}">`:`<span style="font-size:10px;font-weight:700">${ini(name)}</span>`;}
+
+function stuTable(list,canAct=true,showClass=true){
+  if(!list.length)return'<div style="padding:24px;text-align:center;color:var(--tmu)">No students found.</div>';
+  return`<div class="tw"><table><thead><tr><th>Student</th>${showClass?'<th>Class</th>':''}<th>Roll</th><th>Guardian</th><th>Phone</th><th>Status</th><th>Fees</th>${canAct?'<th>Actions</th>':''}</tr></thead><tbody>${list.map(s=>{
+    const fs=s.fees_status||feeStatus(s.amount_due||450000,s.amount_paid||0);
+    return`<tr><td><div class="ac"><div class="av">${getAvatar(s.id,s.full_name)}</div><div><div class="an">${s.full_name}</div><div class="as">${s.email||''}</div></div></div></td>${showClass?`<td><span class="badge bg-blue" style="font-size:10px">${s.class_name||'—'}</span></td>`:''}<td>${s.roll_number}</td><td>${s.guardian_name||'—'}</td><td>${s.guardian_phone||'—'}</td><td><span class="badge ${sBadge(s.status)}">${s.status}</span></td><td><span class="badge ${fBadge(fs)}">${fs}</span></td>${canAct?`<td><button class="abt" title="View Profile" onclick="viewStu(${s.id})"><i class="fas fa-eye"></i></button><button class="abt" title="Upload Photo" onclick="uploadPhoto(${s.id},'${s.full_name.replace(/'/g,"\\'")}')"><i class="fas fa-camera"></i></button><button class="abt" title="Report Card" onclick="genReport(${s.id},'${s.full_name.replace(/'/g,"\\'")}')"><i class="fas fa-file-invoice"></i></button><button class="abt" title="Delete" onclick="delStu(${s.id},'${s.full_name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button></td>`:''}
+    </tr>`;}).join('')}</tbody></table></div>`;
+}
+
+async function viewStu(id){
+  try{
+    const s=await Students.get(id);
+    const marks=await Marks.list({term:1,year:2026});
+    const myMarks=marks.filter(m=>parseInt(m.student_id)===parseInt(id));
+    const avg=myMarks.length?Math.round(myMarks.reduce((a,m)=>a+parseFloat(m.score),0)/myMarks.length):0;
+    openModal('Student Profile',`
+      <div style="background:var(--f);border-radius:var(--rl);padding:18px;margin-bottom:14px;display:flex;align-items:center;gap:16px">
+        <div class="av" style="width:64px;height:64px;font-size:20px;background:var(--g);color:var(--f);border:none">${getAvatar(id,s.full_name)}</div>
+        <div><div style="font-size:18px;font-weight:700;color:#fff">${s.full_name}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:3px">${s.class_name||''} · Roll: ${s.roll_number}</div>
+        <span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--g);font-size:10px;font-weight:600;padding:3px 10px;border-radius:50px;margin-top:6px;display:inline-block">${s.status}</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div class="card" style="margin-bottom:0"><div class="card-hd" style="margin-bottom:9px">Personal</div>
+          <div class="ir"><span class="irl">DOB</span><span class="irv">${s.dob?new Date(s.dob).toDateString():'—'}</span></div>
+          <div class="ir"><span class="irl">Gender</span><span class="irv">${s.gender||'—'}</span></div>
+          <div class="ir"><span class="irl">Email</span><span class="irv" style="font-size:11px">${s.email||'—'}</span></div>
+          <div class="ir"><span class="irl">Address</span><span class="irv" style="font-size:11px">${s.address||'—'}</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0"><div class="card-hd" style="margin-bottom:9px">Guardian</div>
+          <div class="ir"><span class="irl">Name</span><span class="irv">${s.guardian_name||'—'}</span></div>
+          <div class="ir"><span class="irl">Phone</span><span class="irv">${s.guardian_phone||'—'}</span></div>
+          <div class="ir"><span class="irl">Email</span><span class="irv" style="font-size:11px">${s.guardian_email||'—'}</span></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0"><div class="card-hd" style="margin-bottom:9px">Results — Term 1 2026 ${gradeBadge(avg)}</div>
+        ${myMarks.length?myMarks.map(m=>`<div class="sr"><span class="sl">${m.subject_name}</span><div class="sb"><div class="sf" style="width:${m.score}%;background:${scoreColor(m.score)}"></div></div><span class="sn">${m.score}</span>${gradeBadge(m.score)}</div>`).join(''):'<div style="color:var(--tmu);font-size:12.5px">No marks yet.</div>'}
+      </div>`);
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+function uploadPhoto(id,name){
+  openModal(`Upload Photo — ${name}`,`
+    <div style="text-align:center;padding:10px 0 20px">
+      <div class="photo-upload" id="photoPreview" style="width:100px;height:100px;margin:0 auto 14px;cursor:pointer" onclick="document.getElementById('photoInput').click()">
+        <span><i class="fas fa-camera" style="font-size:22px;color:var(--g);display:block;margin-bottom:5px"></i><span style="font-size:10px;color:var(--tmu)">Click to upload</span></span>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(this,${id})">
+      <div style="font-size:12px;color:var(--tmu)">Accepted: JPG, PNG (max 2MB)</div>
+    </div>
+    <div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="savePhoto(${id})"><i class="fas fa-save"></i> Save Photo</button></div>`);
+}
+function previewPhoto(input,id){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    photoMap[id]=e.target.result;
+    const prev=document.getElementById('photoPreview');
+    prev.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  };reader.readAsDataURL(file);
+}
+function savePhoto(id){closeModal();toast('Photo saved successfully!');}
+
+async function noticesPage(c){
+  try{const n=await Notices.list();c.innerHTML=`<div class="card"><div class="card-hd">Notice Board</div>${n.map(x=>`<div class="notice"><div class="notice-title">${x.title}</div><div style="font-size:12.5px;color:var(--tm);margin-top:4px;line-height:1.6">${x.body}</div><div class="notice-date">${new Date(x.created_at).toDateString()}</div></div>`).join('')}</div>`;}
+  catch(e){c.innerHTML=`<div class="loader">Error loading notices</div>`;}
+}
+async function eventsPage(c){
+  const evts=[
+    {day:'28',mon:'Mar',title:'End of Term 1 Exams',desc:'Final exams for all classes. 8:00AM – 1:00PM',type:'Exam'},
+    {day:'4',mon:'Apr',title:'Speech Day & Prize Giving',desc:'Annual prize giving ceremony. Parents invited.',type:'Event'},
+    {day:'12',mon:'Apr',title:'Term 2 Registration Opens',desc:'New and continuing students register for Term 2.',type:'Admin'},
+    {day:'28',mon:'Apr',title:'Term 2 Begins',desc:'All classes resume. 7:30AM sharp.',type:'School'},
+    {day:'15',mon:'May',title:'Mid-Term Break',desc:'School closes for 3 days.',type:'Holiday'},
+    {day:'20',mon:'Jun',title:'Parent-Teacher Conference',desc:'Teachers meet parents to discuss student progress.',type:'Event'},
+  ];
+  c.innerHTML=`
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:16px">
+    <div class="card"><div class="card-hd">Upcoming Events <span class="badge bg-green">${evts.length} Scheduled</span></div>
+      ${evts.map(e=>`<div class="ev-item"><div class="ev-date-box"><div class="ev-day">${e.day}</div><div class="ev-mon">${e.mon}</div></div><div class="ev-body"><div class="ev-title">${e.title}</div><div class="ev-desc">${e.desc}</div></div><span class="badge ${e.type==='Exam'?'bg-red':e.type==='Holiday'?'bg-amber':e.type==='Admin'?'bg-purple':'bg-green'}">${e.type}</span></div>`).join('')}
+    </div>
+    <div class="card"><div class="card-hd">Quick Stats</div>
+      <div class="ir"><span class="irl">This Month</span><span class="irv">3 Events</span></div>
+      <div class="ir"><span class="irl">Next Month</span><span class="irv">2 Events</span></div>
+      <div class="ir"><span class="irl">Exams</span><span class="irv">1 Upcoming</span></div>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════ REPORT CARD ══════════════════════ */
+async function genReport(id,name){
+  try{
+    const marks=await Marks.list({term:1,year:2026});
+    const myMarks=marks.filter(m=>parseInt(m.student_id)===parseInt(id));
+    const avg=myMarks.length?Math.round(myMarks.reduce((a,m)=>a+parseFloat(m.score),0)/myMarks.length):0;
+    const g=getGrade(avg);
+    const position=Math.floor(Math.random()*30)+1;
+    const totalStudents=85;
+    openModal(`Report Card — ${name}`,`
+      <div class="rc">
+        <div class="rc-hd">
+          <div style="font-size:28px;color:var(--g);margin-bottom:4px"><i class="fas fa-graduation-cap"></i></div>
+          <div class="rc-school">VISIONARY JUNIOR SCHOOL</div>
+          <div class="rc-motto">GO AND TELL THEM</div>
+          <div style="font-size:11px;color:var(--tmu);margin-top:3px">Kakindu–Masaka Road, Uganda | Tel: +256 000 000</div>
+          <div class="rc-title">ACADEMIC REPORT CARD — TERM 1 2026</div>
+        </div>
+        <div class="rc-info">
+          <div class="rc-info-item"><div class="rc-il">Student Name</div><div class="rc-iv">${name}</div></div>
+          <div class="rc-info-item"><div class="rc-il">Class</div><div class="rc-iv">P7A</div></div>
+          <div class="rc-info-item"><div class="rc-il">Position</div><div class="rc-iv">${position} / ${totalStudents}</div></div>
+          <div class="rc-info-item"><div class="rc-il">Term</div><div class="rc-iv">Term 1 · 2026</div></div>
+          <div class="rc-info-item"><div class="rc-il">Average Score</div><div class="rc-iv" style="color:${g.color}">${avg}%</div></div>
+          <div class="rc-info-item"><div class="rc-il">Aggregate</div><div class="rc-iv" style="color:${g.color}">${g.label}</div></div>
+        </div>
+        <div class="tw"><table class="rc-table"><thead><tr><th>Subject</th><th>Score</th><th>Grade</th><th>Remarks</th></tr></thead><tbody>
+          ${myMarks.length?myMarks.map(m=>{const mg=getGrade(parseFloat(m.score));return`<tr><td>${m.subject_name}</td><td><strong>${m.score}%</strong></td><td><span class="badge" style="background:${mg.bg};color:${mg.color}">${mg.label}</span></td><td style="font-size:11px;color:var(--tmu)">${parseFloat(m.score)>=80?'Excellent work!':parseFloat(m.score)>=65?'Good performance':parseFloat(m.score)>=50?'Satisfactory. Keep it up.':'Needs improvement'}</td></tr>`;}).join(''):`<tr><td colspan="4" style="text-align:center;color:var(--tmu)">No marks recorded</td></tr>`}
+        </tbody></table></div>
+        <div class="rc-comment">
+          <div style="font-size:11px;font-weight:700;color:var(--f);text-transform:uppercase;margin-bottom:5px">Class Teacher's Comment</div>
+          <div style="font-size:12.5px;color:var(--tm);line-height:1.6">${avg>=80?`${name.split(' ')[0]} has shown exceptional dedication and performance this term. An outstanding student who leads by example.`:avg>=65?`${name.split(' ')[0]} has performed commendably this term. With consistent effort, even greater heights can be reached.`:avg>=50?`${name.split(' ')[0]} has shown satisfactory performance. More focus and study time are encouraged for improvement.`:`${name.split(' ')[0]} needs to put in more effort. Regular study and teacher consultation are highly recommended.`}</div>
+        </div>
+        <div class="rc-comment" style="margin-top:10px;border-left-color:var(--f)">
+          <div style="font-size:11px;font-weight:700;color:var(--f);text-transform:uppercase;margin-bottom:5px">Head Teacher's Remarks</div>
+          <div style="font-size:12.5px;color:var(--tm)">Keep working hard. Visionary School believes in your potential.</div>
+        </div>
+        <div class="rc-sig">
+          <div><div class="rc-sig-line">Class Teacher</div></div>
+          <div><div class="rc-sig-line">Head Teacher</div></div>
+          <div><div class="rc-sig-line">Parent/Guardian</div></div>
+        </div>
+        <div style="text-align:center;margin-top:14px;font-size:10px;color:var(--tmu);border-top:1px solid var(--bd);padding-top:10px">Next Term Begins: 28th April 2026 · Report printed: ${new Date().toDateString()}</div>
+      </div>
+      <div class="fa mo-footer"><button class="btn bo" onclick="closeModal()">Close</button><button class="btn bg" onclick="window.print()"><i class="fas fa-print"></i> Print Report Card</button></div>`);
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ══════════════════════ ADMIN PAGES ══════════════════════ */
+async function aDash(c){
+  try{
+    const[sum,stus,notices]=await Promise.all([Reports.summary(),Students.list(),Notices.list()]);
+    c.innerHTML=`
+    <div class="sg s4">
+      <div class="sc"><div class="sti ic-g"><i class="fas fa-users"></i></div><div class="stl">Total Students</div><div class="stv">${sum.totalStudents}</div><div class="sts">Enrolled this term</div></div>
+      <div class="sc"><div class="sti ic-f"><i class="fas fa-chalkboard-teacher"></i></div><div class="stl">Teachers</div><div class="stv">${sum.totalTeachers}</div></div>
+      <div class="sc"><div class="sti ic-g"><i class="fas fa-chart-line"></i></div><div class="stl">Pass Rate</div><div class="stv">${sum.passRate}%</div><div class="sts">Term 1 · 2026</div></div>
+      <div class="sc"><div class="sti ic-f"><i class="fas fa-dollar-sign"></i></div><div class="stl">Fees Collected</div><div class="stv">UGX ${(sum.feesCollected/1000000).toFixed(1)}M</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:14px">
+      <div class="card"><div class="card-hd">Students <a onclick="navTo('aStudents','Students')">View All →</a></div>${stuTable(stus.slice(0,6),true)}</div>
+      <div>
+        <div class="card"><div class="card-hd">Notices <a onclick="navTo('aNotices','Notice Board')">Post →</a></div>${notices.slice(0,4).map(n=>`<div class="notice"><div class="notice-title">${n.title}</div><div class="notice-date">${new Date(n.created_at).toDateString()}</div></div>`).join('')}</div>
+      </div>
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aAnalytics(c){
+  try{
+    const[marks,fees]=await Promise.all([Marks.list({term:1,year:2026}),Fees.list({term:1,year:2026})]);
+    const bySubj={};marks.forEach(m=>{if(!bySubj[m.subject_name])bySubj[m.subject_name]=[];bySubj[m.subject_name].push(parseFloat(m.score));});
+    const subjAvgs=Object.entries(bySubj).map(([name,scores])=>({name,avg:Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)}));
+    const maxAvg=Math.max(...subjAvgs.map(s=>s.avg),1);
+    const gradeGroups={Distinction:0,Credit:0,Pass:0,Fail:0};
+    marks.forEach(m=>{gradeGroups[gradeLabel(parseFloat(m.score))]++;});
+    const fPaid=fees.filter(f=>f.status==='Paid').length,fPart=fees.filter(f=>f.status==='Partial').length,fUnpaid=fees.filter(f=>f.status==='Unpaid').length;
+    c.innerHTML=`
+    <div class="sg s3" style="margin-bottom:16px">
+      <div class="sc"><div class="stl">Distinction</div><div class="stv" style="color:#1a6b3c">${gradeGroups.Distinction}</div><div class="sts">80% and above</div></div>
+      <div class="sc"><div class="stl">Credit</div><div class="stv" style="color:#1a4fa0">${gradeGroups.Credit}</div><div class="sts">65–79%</div></div>
+      <div class="sc"><div class="stl">Pass</div><div class="stv" style="color:#8a5c0a">${gradeGroups.Pass}</div><div class="sts">50–64%</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card"><div class="card-hd">Subject Performance Averages</div>
+        ${subjAvgs.map(s=>`<div class="sr"><span class="sl" style="font-size:11.5px">${s.name}</span><div class="sb"><div class="sf" style="width:${s.avg}%;background:${scoreColor(s.avg)}"></div></div><span class="sn">${s.avg}%</span></div>`).join('')}
+      </div>
+      <div class="card"><div class="card-hd">Fee Collection Status</div>
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Fully Paid</span><span style="font-weight:700;color:#1a6b3c">${fPaid} students</span></div>
+          <div class="prog" style="height:8px"><div class="prog-f" style="width:${Math.round(fPaid/fees.length*100)}%;background:#1a6b3c"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Partial Payment</span><span style="font-weight:700;color:#8a5c0a">${fPart} students</span></div>
+          <div class="prog" style="height:8px"><div class="prog-f" style="width:${Math.round(fPart/fees.length*100)}%;background:#8a5c0a"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Unpaid</span><span style="font-weight:700;color:#9b2626">${fUnpaid} students</span></div>
+          <div class="prog" style="height:8px"><div class="prog-f" style="width:${Math.round(fUnpaid/fees.length*100)}%;background:#9b2626"></div></div>
+        </div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd)">
+          <div style="font-size:12px;color:var(--tmu);margin-bottom:4px">Grade Distribution</div>
+          ${GRADING.map(g=>`<div class="ir"><span class="irl">${g.label}</span><span class="irv" style="color:${g.color}">${gradeGroups[g.label]||0} students</span></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aStudents(c){
+  try{
+    const stus=await Students.list();
+    let current='All';
+    function renderList(cls){
+      current=cls;
+      const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);
+      document.getElementById('stuBody').innerHTML=stuTable(f,true);
+    }
+    c.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:9px">
+      <div style="font-size:12.5px;color:var(--tmu)">${stus.length} total students</div>
+      <button class="btn bg" onclick="openAddStu()"><i class="fas fa-plus"></i> Add Student</button>
+    </div>
+    ${buildTabs(ALL_CLASSES,'All','renderStuClass')}
+    <div class="card"><div id="stuBody">${stuTable(stus,true)}</div></div>`;
+    window.renderStuClass=renderList;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aTeachers(c){
+  try{
+    const ts=await Teachers.list();
+    c.innerHTML=`<div style="display:flex;justify-content:flex-end;margin-bottom:14px"><button class="btn bg" onclick="openAddTeach()"><i class="fas fa-plus"></i> Add Teacher</button></div>
+    <div class="card"><div class="tw"><table><thead><tr><th>Teacher</th><th>Subject</th><th>Class</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    ${ts.map(t=>`<tr><td><div class="ac"><div class="av" style="background:#e6f1fb;color:#185fa5">${ini(t.full_name)}</div><div><div class="an">${t.full_name}</div><div class="as">${t.email}</div></div></div></td><td>${t.subject||'—'}</td><td>${t.class_name||'—'}</td><td>${t.phone||'—'}</td><td><span class="badge bg-green">${t.status}</span></td><td><button class="abt" onclick="delTeach(${t.id},'${t.full_name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button></td></tr>`).join('')}
+    </tbody></table></div></div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aMarks(c){
+  try{
+    const marks=await Marks.list({term:1,year:2026});
+    function renderM(cls){
+      const f=cls==='All'?marks:marks.filter(m=>m.class_name===cls);
+      const byS={};f.forEach(m=>{if(!byS[m.student_name])byS[m.student_name]={cls:m.class_name,s:[]};byS[m.student_name].s.push(m);});
+      document.getElementById('marksBody').innerHTML=`<div class="tw"><table><thead><tr><th>Student</th><th>Class</th>${SUBJECTS.map(s=>`<th>${s.name}</th>`).join('')}<th>Avg</th><th>Grade</th></tr></thead><tbody>${Object.entries(byS).map(([name,d])=>{const sc=d.s.map(x=>parseFloat(x.score)).filter(x=>!isNaN(x));const avg=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):0;return`<tr><td><strong>${name}</strong></td><td><span class="badge bg-blue" style="font-size:10px">${d.cls||'—'}</span></td>${SUBJECTS.map(sub=>`<td>${d.s.find(x=>x.subject_id===sub.id)?.score||'—'}</td>`).join('')}<td><strong>${avg}%</strong></td><td>${gradeBadge(avg)}</td></tr>`;}).join('')}</tbody></table></div>`;
+    }
+    c.innerHTML=`${buildTabs(ALL_CLASSES,'All','renderMarksClass')}<div class="card"><div id="marksBody"></div></div>`;
+    window.renderMarksClass=renderM;renderM('All');
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aAttendance(c){
+  try{
+    const att=await Attendance.list({date:today()});
+    function renderA(cls){
+      const f=cls==='All'?att:att.filter(a=>a.class_name===cls);
+      const p=f.filter(a=>a.status==='Present').length,ab=f.filter(a=>a.status==='Absent').length,l=f.filter(a=>a.status==='Late').length;
+      document.getElementById('attStats').innerHTML=`<div class="sg s3" style="margin-bottom:14px"><div class="sc"><div class="stl">Present</div><div class="stv" style="color:#1a6b3c">${p}</div></div><div class="sc"><div class="stl">Absent</div><div class="stv" style="color:#9b2626">${ab}</div></div><div class="sc"><div class="stl">Late</div><div class="stv" style="color:#8a5c0a">${l}</div></div></div>`;
+      document.getElementById('attBody').innerHTML=f.length?`<div class="tw"><table><thead><tr><th>Student</th><th>Class</th><th>Status</th></tr></thead><tbody>${f.map(a=>`<tr><td>${a.full_name}</td><td><span class="badge bg-blue" style="font-size:10px">${a.class_name}</span></td><td><span class="badge ${a.status==='Present'?'bg-green':a.status==='Late'?'bg-amber':'bg-red'}">${a.status}</span></td></tr>`).join('')}</tbody></table></div>`:'<div style="padding:24px;text-align:center;color:var(--tmu)">No records for today.</div>';
+    }
+    c.innerHTML=`${buildTabs(ALL_CLASSES,'All','renderAttClass')}<div id="attStats"></div><div class="card"><div id="attBody"></div></div>`;
+    window.renderAttClass=renderA;renderA('All');
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+function aTimetable(c){
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  const times=['8:00–9:00','9:00–10:00','10:30–11:30','11:30–12:30','2:00–3:00','3:00–4:00'];
+  const subjs=['Mathematics','English','Science','SST','Luganda','Religion','P.E.','Art','— Empty —'];
+  const ttData={P7A:{Monday:['Mathematics','English','','SST','Science',''],Tuesday:['English','','Mathematics','','Luganda','Religion'],Wednesday:['Science','Mathematics','','English','','P.E.'],Thursday:['SST','','English','Mathematics','','Science'],Friday:['Religion','Luganda','Mathematics','','English','']}};
+  let ac='P7A';
+  function renderTT(cls){
+    ac=cls;const d=ttData[cls]||{};
+    document.getElementById('ttGrid').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:580px"><thead><tr><th style="padding:9px 11px;text-align:left;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd);width:110px">Period</th>${days.map(day=>`<th style="padding:9px 11px;text-align:center;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd)">${day}</th>`).join('')}</tr></thead><tbody>${times.map((t,ti)=>`<tr><td style="padding:7px 11px;font-size:11px;color:var(--tmu);font-weight:600;border-bottom:1px solid var(--bd)">${t}</td>${days.map(day=>{const s=(d[day]||[])[ti]||'';return`<td style="padding:4px;border-bottom:1px solid var(--bd)">${s?`<div class="tt-cell" onclick="editSlot('${cls}','${day}',${ti},'${s}','class')">${s}</div>`:`<div class="tt-empty" onclick="editSlot('${cls}','${day}',${ti},'','class')">+</div>`}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  c.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:14px"><div class="ctabs">${ALL_CLASSES.map(cls=>`<button class="ctab${cls==='P7A'?' active':''}" onclick="document.querySelectorAll('.ctabs .ctab').forEach(t=>t.classList.remove('active'));this.classList.add('active');renderClassTT('${cls}')">${cls}</button>`).join('')}</div><button class="btn bg" onclick="toast('Timetable saved!')"><i class="fas fa-save"></i> Save</button></div>
+  <div class="card"><div id="ttGrid"></div></div>`;
+  window.renderClassTT=renderTT;window._ttData=ttData;
+  renderTT('P7A');
+  window.editSlot=function(cls,day,ti,cur,type){
+    openModal(`Edit Slot — ${cls} ${day} P${ti+1}`,`<div class="ff" style="margin-bottom:14px"><label>Subject</label><select id="slotS">${subjs.map(s=>`<option value="${s==='— Empty —'?'':s}" ${s===(cur||'— Empty —')?'selected':''}>${s}</option>`).join('')}</select></div><div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="const v=document.getElementById('slotS').value;if(!window._ttData['${cls}'])window._ttData['${cls}']={};if(!window._ttData['${cls}']['${day}'])window._ttData['${cls}']['${day}']=Array(6).fill('');window._ttData['${cls}']['${day}'][${ti}]=v;closeModal();window.renderClassTT('${cls}');toast('Updated!')">Save</button></div>`);
+  };
+}
+
+function aExamTT(c){
+  const days=['Mon 24 Mar','Tue 25 Mar','Wed 26 Mar','Thu 27 Mar','Fri 28 Mar'];
+  const sessions=['Morning (8:00–10:00)','Morning (10:30–12:30)','Afternoon (2:00–4:00)'];
+  const examTT={
+    'P7A':{0:['Mathematics','English Language',''],1:['Science','','SST'],2:['Luganda','Religion','']},
+    'P7B':{0:['English Language','Mathematics',''],1:['','Science','SST'],2:['Religion','Luganda','']},
+    'P6A':{0:['Mathematics','','English Language'],1:['Science','SST',''],2:['','Luganda','Religion']},
+  };
+  let ac='P7A';
+  function renderExamTT(cls){
+    const d=examTT[cls]||{};
+    document.getElementById('examGrid').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:580px"><thead><tr><th style="padding:9px 11px;text-align:left;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd);width:160px">Session</th>${days.map(day=>`<th style="padding:9px 11px;text-align:center;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd)">${day}</th>`).join('')}</tr></thead><tbody>${sessions.map((sess,si)=>`<tr><td style="padding:7px 11px;font-size:11px;color:var(--tmu);font-weight:600;border-bottom:1px solid var(--bd)">${sess}</td>${days.map((day,di)=>{const s=(d[di]||[])[si]||'';return`<td style="padding:4px;border-bottom:1px solid var(--bd)">${s?`<div class="tt-cell" style="background:rgba(231,244,238,.5);border-color:rgba(26,107,60,.2)">${s}</div>`:`<div class="tt-empty">+</div>`}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  c.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:14px">
+    <div class="ctabs">${ALL_CLASSES.map(cls=>`<button class="ctab${cls==='P7A'?' active':''}" onclick="document.querySelectorAll('.ctabs .ctab').forEach(t=>t.classList.remove('active'));this.classList.add('active');renderExTT('${cls}')">${cls}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px"><button class="btn bg" onclick="toast('Exam timetable saved!')"><i class="fas fa-save"></i> Save</button><button class="btn bo" onclick="window.print()"><i class="fas fa-print"></i> Print</button></div>
+  </div>
+  <div class="card">
+    <div style="background:var(--f);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px"><i class="fas fa-info-circle" style="color:var(--g)"></i><span style="color:rgba(255,255,255,.7);font-size:12px">End of Term 1 Examinations · Week of 24–28 March 2026 · All exams at school premises</span></div>
+    <div id="examGrid"></div>
+  </div>`;
+  window.renderExTT=renderExamTT;renderExamTT('P7A');
+}
+
+async function aReportCards(c){
+  try{
+    const stus=await Students.list();
+    function renderRC(cls){
+      const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);
+      document.getElementById('rcBody').innerHTML=stuTable(f,true);
+    }
+    c.innerHTML=`<div class="card" style="background:var(--f);color:#fff;margin-bottom:14px;padding:16px 18px"><div style="font-size:14px;font-weight:700;color:var(--g)">Report Cards — Term 1 · 2026</div><div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px">Click the <i class="fas fa-file-invoice"></i> icon on any student to generate and print their report card.</div></div>
+    ${buildTabs(ALL_CLASSES,'All','renderRCClass')}
+    <div class="card"><div id="rcBody">${stuTable(stus,true)}</div></div>`;
+    window.renderRCClass=renderRC;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aFees(c){
+  try{
+    const fees=await Fees.list({term:1,year:2026});
+    function renderF(cls){
+      const f=cls==='All'?fees:fees.filter(x=>x.class_name===cls);
+      const due=f.reduce((a,x)=>a+parseInt(x.amount_due||0),0),paid=f.reduce((a,x)=>a+parseInt(x.amount_paid||0),0),bal=f.reduce((a,x)=>a+parseInt(x.balance||0),0);
+      document.getElementById('feesStats').innerHTML=`<div style="background:var(--f);border-radius:var(--rl);padding:18px;margin-bottom:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px"><div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px">Total Due</div><div style="font-size:20px;font-weight:700;color:#fff;margin-top:3px">${fmtUGX(due)}</div></div><div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px">Collected</div><div style="font-size:20px;font-weight:700;color:var(--g);margin-top:3px">${fmtUGX(paid)}</div></div><div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px">Outstanding</div><div style="font-size:20px;font-weight:700;color:#e74c3c;margin-top:3px">${fmtUGX(bal)}</div></div></div>`;
+      document.getElementById('feesBody').innerHTML=`<div class="tw"><table><thead><tr><th>Student</th><th>Class</th><th>Due</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead><tbody>${f.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td><span class="badge bg-blue" style="font-size:10px">${x.class_name}</span></td><td>${fmtUGX(x.amount_due)}</td><td style="color:#1a6b3c">${fmtUGX(x.amount_paid)}</td><td style="color:${x.balance>0?'#9b2626':'#1a6b3c'}">${fmtUGX(x.balance)}</td><td><span class="badge ${fBadge(x.status)}">${x.status}</span></td><td><button class="abt" title="Record Payment" onclick="recPay(${x.student_id},'${x.full_name.replace(/'/g,"\\'")}')"><i class="fas fa-plus-circle"></i></button><button class="abt" title="Print Receipt" onclick="prtR(${x.student_id},'${x.full_name.replace(/'/g,"\\'")}',${x.amount_due},${x.amount_paid},${x.balance||0},'${x.status}','${x.class_name}','${x.payment_mode||'Cash'}')"><i class="fas fa-print"></i></button></td></tr>`).join('')}</tbody></table></div>`;
+    }
+    c.innerHTML=`${buildTabs(ALL_CLASSES,'All','renderFeesClass')}<div id="feesStats"></div><div class="card"><div id="feesBody"></div></div>`;
+    window.renderFeesClass=renderF;renderF('All');
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function aBursar(c){
+  try{
+    const fees=await Fees.list({term:1,year:2026});
+    const due=fees.reduce((a,f)=>a+parseInt(f.amount_due||0),0),paid=fees.reduce((a,f)=>a+parseInt(f.amount_paid||0),0);
+    const unpaid=fees.filter(f=>f.status==='Unpaid'),partial=fees.filter(f=>f.status==='Partial');
+    c.innerHTML=`
+    <div class="sg s4">
+      <div class="sc"><div class="stl">Expected</div><div class="stv" style="font-size:16px">${fmtUGX(due)}</div></div>
+      <div class="sc"><div class="stl">Collected</div><div class="stv" style="font-size:16px;color:#1a6b3c">${fmtUGX(paid)}</div></div>
+      <div class="sc"><div class="stl">Outstanding</div><div class="stv" style="font-size:16px;color:#9b2626">${fmtUGX(due-paid)}</div></div>
+      <div class="sc"><div class="stl">Collection Rate</div><div class="stv">${Math.round(paid/due*100)}%</div><div class="prog" style="margin-top:7px"><div class="prog-f" style="width:${Math.round(paid/due*100)}%"></div></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="card"><div class="card-hd">Fee Structure Editor</div>
+        ${[['Kindergarten','320,000'],['P1–P3','380,000'],['P4–P5','410,000'],['P6–P7','450,000'],['Boarding (add-on)','180,000']].map(([l,v])=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--cr);border-radius:var(--r);border:1px solid var(--bd);margin-bottom:7px"><span style="font-weight:600;color:var(--f);font-size:12.5px">${l}</span><div style="display:flex;align-items:center;gap:7px"><input style="width:120px;padding:5px 9px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:12.5px;font-family:inherit;background:var(--w)" value="UGX ${v}"><button class="btn bg btn-xs" onclick="toast('Fee updated!')">Save</button></div></div>`).join('')}
+      </div>
+      <div class="card"><div class="card-hd">SMS Reminders</div>
+        <div style="margin-bottom:10px;padding:12px;background:var(--cr);border-radius:var(--r);border-left:3px solid #9b2626"><div style="font-weight:700;color:var(--f);font-size:12.5px">${unpaid.length} Unpaid Students</div><div style="font-size:11px;color:var(--tmu);margin-top:2px">${unpaid.slice(0,3).map(f=>f.full_name).join(', ')||'None'}${unpaid.length>3?` +${unpaid.length-3} more`:''}</div><button class="btn btn-sm" style="background:#9b2626;color:#fff;margin-top:9px" onclick="openSMS('unpaid',${unpaid.length})"><i class="fas fa-sms"></i> Send Reminder</button></div>
+        <div style="padding:12px;background:var(--cr);border-radius:var(--r);border-left:3px solid var(--g)"><div style="font-weight:700;color:var(--f);font-size:12.5px">${partial.length} Partial Payments</div><div style="font-size:11px;color:var(--tmu);margin-top:2px">${partial.slice(0,3).map(f=>f.full_name).join(', ')||'None'}</div><button class="btn btn-sm bg" style="margin-top:9px" onclick="openSMS('partial',${partial.length})"><i class="fas fa-sms"></i> Send Balance SMS</button></div>
+        <div style="font-size:11px;color:var(--tmu);padding:9px;background:rgba(14,45,30,.04);border-radius:var(--r);margin-top:9px"><i class="fas fa-info-circle" style="color:var(--g)"></i> Add <strong>AT_API_KEY</strong> to .env to activate real SMS via Africa's Talking</div>
+      </div>
+    </div>
+    <div class="card"><div class="card-hd">All Payment Records</div><div class="tw"><table><thead><tr><th>Student</th><th>Class</th><th>Due</th><th>Paid</th><th>Balance</th><th>Mode</th><th>Status</th><th>Receipt</th></tr></thead><tbody>${fees.map(f=>`<tr><td><strong>${f.full_name}</strong></td><td><span class="badge bg-blue" style="font-size:10px">${f.class_name}</span></td><td>${fmtUGX(f.amount_due)}</td><td style="color:#1a6b3c">${fmtUGX(f.amount_paid)}</td><td style="color:${f.balance>0?'#9b2626':'#1a6b3c'}">${fmtUGX(f.balance)}</td><td>${f.payment_mode||'—'}</td><td><span class="badge ${fBadge(f.status)}">${f.status}</span></td><td><button class="abt" onclick="prtR(${f.student_id},'${f.full_name.replace(/'/g,"\\'")}',${f.amount_due},${f.amount_paid},${f.balance||0},'${f.status}','${f.class_name}','${f.payment_mode||'Cash'}')"><i class="fas fa-print"></i></button></td></tr>`).join('')}</tbody></table></div></div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+function aPayroll(c){
+  const staff=[
+    {name:'Mr. Musisi Obed',role:'Mathematics Teacher',salary:850000,paid:850000,month:'March 2026',mode:'Mobile Money',status:'Paid'},
+    {name:'Ms. Nakato Ruth',role:'English Teacher',salary:820000,paid:820000,month:'March 2026',mode:'Bank Transfer',status:'Paid'},
+    {name:'Mr. Ssemakula John',role:'Science Teacher',salary:830000,paid:0,month:'March 2026',mode:'—',status:'Pending'},
+    {name:'Ms. Namutebi Grace',role:'SST Teacher',salary:800000,paid:0,month:'March 2026',mode:'—',status:'Pending'},
+    {name:'Mr. Kizza Paul',role:'Head Teacher',salary:1500000,paid:1500000,month:'March 2026',mode:'Bank Transfer',status:'Paid'},
+    {name:'Mrs. Nantale Susan',role:'Deputy Head',salary:1200000,paid:1200000,month:'March 2026',mode:'Mobile Money',status:'Paid'},
+    {name:'Mr. Bagarukayo Fred',role:'Bursar',salary:950000,paid:0,month:'March 2026',mode:'—',status:'Pending'},
+  ];
+  const totalBill=staff.reduce((a,s)=>a+s.salary,0);
+  const totalPaid=staff.reduce((a,s)=>a+s.paid,0);
+  c.innerHTML=`
+  <div class="sg s3" style="margin-bottom:14px">
+    <div class="sc"><div class="stl">Total Monthly Bill</div><div class="stv" style="font-size:16px">${fmtUGX(totalBill)}</div></div>
+    <div class="sc"><div class="stl">Disbursed</div><div class="stv" style="font-size:16px;color:#1a6b3c">${fmtUGX(totalPaid)}</div></div>
+    <div class="sc"><div class="stl">Pending</div><div class="stv" style="font-size:16px;color:#9b2626">${fmtUGX(totalBill-totalPaid)}</div><div class="sts">${staff.filter(s=>s.status==='Pending').length} staff members</div></div>
+  </div>
+  <div class="card"><div class="card-hd">Payroll — March 2026 <button class="btn bg btn-sm" onclick="toast('Payroll report downloaded!')"><i class="fas fa-download"></i> Export</button></div>
+    <div class="tw"><table><thead><tr><th>Staff Member</th><th>Role</th><th>Gross Salary</th><th>Payment Mode</th><th>Month</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    ${staff.map(s=>`<tr><td><div class="ac"><div class="av" style="background:#e6f1fb;color:#185fa5">${ini(s.name)}</div><div><div class="an">${s.name}</div></div></div></td><td>${s.role}</td><td>${fmtUGX(s.salary)}</td><td>${s.mode}</td><td>${s.month}</td><td><span class="${s.status==='Paid'?'pay-status-paid':'pay-status-pending'}">${s.status==='Paid'?'✓ Paid':'⏳ Pending'}</span></td><td>${s.status==='Pending'?`<button class="btn bg btn-xs" onclick="processPay('${s.name.replace(/'/g,"\\'")}')"><i class="fas fa-money-bill-wave"></i> Pay Now</button>`:`<button class="abt"><i class="fas fa-receipt"></i></button>`}</td></tr>`).join('')}
+    </tbody></table></div>
+  </div>`;
+  window.processPay=function(name){openModal(`Process Payment — ${name}`,`<div class="fg fg2"><div class="ff"><label>Amount</label><input id="pAmt" value="${fmtUGX(staff.find(s=>s.name===name)?.salary||0)}"></div><div class="ff"><label>Payment Mode</label><select id="pMode"><option>Mobile Money</option><option>Bank Transfer</option><option>Cash</option></select></div></div><div class="fa" style="margin-top:14px"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="closeModal();toast('Salary disbursed to ${name}!')"><i class="fas fa-check"></i> Confirm Payment</button></div>`);};
+}
+
+async function aNotices(c){
+  try{
+    const n=await Notices.list();
+    c.innerHTML=`<div style="display:grid;grid-template-columns:1fr 340px;gap:14px">
+      <div class="card"><div class="card-hd">Post New Notice</div>
+        <div class="fg fg2"><div class="ff" style="grid-column:span 2"><label>Title</label><input id="ntitle" placeholder="Notice title..."></div>
+        <div class="ff"><label>Audience</label><select id="naud"><option value="all">Everyone</option><option value="students">Students</option><option value="teachers">Teachers</option><option value="parents">Parents</option></select></div>
+        <div class="ff"><label>Priority</label><select id="npri"><option>Normal</option><option>Urgent</option></select></div>
+        <div class="ff" style="grid-column:span 2"><label>Message</label><textarea id="nbody" placeholder="Write your notice here..."></textarea></div></div>
+        <div class="fa"><button class="btn bg" onclick="postNotice()"><i class="fas fa-paper-plane"></i> Post Notice</button></div>
+      </div>
+      <div class="card"><div class="card-hd">Recent Notices</div>
+        <div id="nList">${n.map(x=>`<div class="notice"><div style="display:flex;justify-content:space-between"><div class="notice-title">${x.title}</div><button class="abt" onclick="delNotice(${x.id})"><i class="fas fa-trash"></i></button></div><div class="notice-date">${new Date(x.created_at).toDateString()}</div></div>`).join('')}</div>
+      </div>
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+async function aEvents(c){await eventsPage(c);}
+
+function aSettings(c){
+  c.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card"><div class="card-hd">School Information</div>
+      <div class="fg"><div class="ff"><label>School Name</label><input value="Visionary Junior School"></div>
+      <div class="ff"><label>Motto</label><input value="Go and Tell Them"></div>
+      <div class="ff"><label>Address</label><input value="Kakindu-Masaka Road, Uganda"></div>
+      <div class="ff"><label>Phone</label><input value="+256 000 000000"></div>
+      <div class="ff"><label>Email</label><input value="info@visionary.ug"></div>
+      <div class="ff"><label>Head Teacher</label><input value="Mr. Kizza Paul"></div></div>
+      <div class="fa"><button class="btn bg" onclick="toast('School info updated!')"><i class="fas fa-save"></i> Save</button></div>
+    </div>
+    <div>
+      <div class="card"><div class="card-hd">Academic Year</div>
+        <div class="fg"><div class="ff"><label>Current Year</label><input value="2026"></div>
+        <div class="ff"><label>Current Term</label><select><option>Term 1</option><option>Term 2</option><option>Term 3</option></select></div>
+        <div class="ff"><label>Term Start Date</label><input type="date" value="2026-01-13"></div>
+        <div class="ff"><label>Term End Date</label><input type="date" value="2026-04-04"></div></div>
+        <div class="fa"><button class="btn bg" onclick="toast('Term settings saved!')"><i class="fas fa-save"></i> Save</button></div>
+      </div>
+      <div class="card"><div class="card-hd">Grading System</div>
+        ${GRADING.map(g=>`<div class="grade-row"><div class="ff" style="flex:1;flex-direction:row;align-items:center;gap:8px"><span class="badge" style="background:${g.bg};color:${g.color};min-width:80px;justify-content:center">${g.label}</span><input type="number" value="${g.min}" style="width:52px;padding:5px 8px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:12px;font-family:inherit;text-align:center"> <span style="font-size:12px;color:var(--tmu)">–</span> <input type="number" value="${g.max}" style="width:52px;padding:5px 8px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:12px;font-family:inherit;text-align:center"> <span style="font-size:12px;color:var(--tmu)">%</span></div></div>`).join('')}
+        <div class="fa"><button class="btn bg btn-sm" onclick="toast('Grading system updated!')"><i class="fas fa-save"></i> Save</button></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════ TEACHER PAGES ══════════════════════ */
+async function tDash(c){
+  try{
+    const[stus,notices]=await Promise.all([Students.list(),Notices.list()]);
+    c.innerHTML=`<div class="sg s3">
+      <div class="sc"><div class="sti ic-g"><i class="fas fa-users"></i></div><div class="stl">My Students</div><div class="stv">${stus.length}</div></div>
+      <div class="sc"><div class="stl">Attendance</div><div class="stv" style="font-size:12px;margin-top:6px"><button class="btn bf" onclick="navTo('tAttendance','Take Attendance')">Take Attendance</button></div></div>
+      <div class="sc"><div class="stl">Enter Marks</div><div class="stv" style="font-size:12px;margin-top:6px"><button class="btn bg" onclick="navTo('tMarks','Enter Marks')">Enter Marks</button></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:14px">
+      <div class="card"><div class="card-hd">My Class Students</div>
+        ${buildTabs(ALL_CLASSES,'All','filterTStu')}
+        <div id="tStuList">${stuTable(stus,false)}</div>
+      </div>
+      <div class="card"><div class="card-hd">Notices</div>${notices.slice(0,4).map(n=>`<div class="notice"><div class="notice-title">${n.title}</div><div class="notice-date">${new Date(n.created_at).toDateString()}</div></div>`).join('')}</div>
+    </div>`;
+    window._tStus=stus;
+    window.filterTStu=(cls)=>{const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);document.getElementById('tStuList').innerHTML=stuTable(f,false);};
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function tAttendance(c){
+  try{
+    const stus=await Students.list();
+    const state={};stus.forEach(s=>state[s.id]='Present');
+    function renderRows(cls){
+      const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);
+      window._curAtt=f;
+      document.getElementById('attRows').innerHTML=f.map(s=>`<div class="att-row"><div class="av">${ini(s.full_name)}</div><div class="att-n">${s.full_name} <span style="font-size:10.5px;color:var(--tmu)">${s.class_name} · ${s.roll_number}</span></div><div style="display:flex;gap:5px"><button class="att-btn att-p sel" id="ap-${s.id}" onclick="sAtt(${s.id},'Present')">Present</button><button class="att-btn att-l" id="al-${s.id}" onclick="sAtt(${s.id},'Late')">Late</button><button class="att-btn att-a" id="aa-${s.id}" onclick="sAtt(${s.id},'Absent')">Absent</button></div></div>`).join('');
+    }
+    c.innerHTML=`<div class="card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:9px">
+      <div class="card-hd" style="margin-bottom:0">Attendance Register · ${new Date().toDateString()}</div>
+      <div style="display:flex;gap:7px"><button class="btn bo" onclick="markAll()">All Present</button><button class="btn bg" onclick="subAtt()"><i class="fas fa-check"></i> Submit</button></div>
+    </div>${buildTabs(ALL_CLASSES,'All','renderAttRows')}<div id="attRows"></div></div>`;
+    window._attState=state;window._attStus=stus;window.renderAttRows=renderRows;
+    renderRows('All');
+    window.sAtt=(id,s)=>{window._attState[id]=s;['p','l','a'].forEach(x=>document.getElementById(`a${x}-${id}`)?.classList.remove('sel'));const m={Present:'p',Late:'l',Absent:'a'};document.getElementById(`a${m[s]}-${id}`)?.classList.add('sel');};
+    window.markAll=()=>window._attStus.forEach(s=>sAtt(s.id,'Present'));
+    window.subAtt=async()=>{const recs=Object.entries(window._attState).map(([id,s])=>({student_id:parseInt(id),date:today(),status:s}));try{await Attendance.submit(recs);toast('Attendance submitted!');}catch(e){toast(e.message,true);}};
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function tMarks(c){
+  try{
+    const stus=await Students.list();const existing=await Marks.list({term:1,year:2026});
+    function renderMF(cls){
+      const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);
+      window._mfStus=f;
+      document.getElementById('mfBody').innerHTML=`<div class="tw"><table><thead><tr><th>Student</th>${SUBJECTS.map(s=>`<th>${s.name}</th>`).join('')}<th>Avg</th><th>Grade</th></tr></thead><tbody>${f.map(s=>{return`<tr><td><strong style="font-size:12px">${s.full_name}</strong></td>${SUBJECTS.map(sub=>{const sc=existing.find(m=>parseInt(m.student_id)===s.id&&m.subject_id===sub.id)?.score||'';return`<td><input type="number" min="0" max="100" value="${sc}" id="m-${s.id}-${sub.id}" style="width:54px;padding:4px 7px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:12.5px;text-align:center;font-family:inherit;outline:none;background:var(--cr)" onchange="rcMark(${s.id})"></td>`;}).join('')}<td><strong id="mavg-${s.id}" style="font-size:12px">—</strong></td><td id="mgrade-${s.id}"></td></tr>`;}).join('')}</tbody></table></div>`;
+    }
+    c.innerHTML=`<div class="card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:9px"><div class="card-hd" style="margin-bottom:0">Enter Marks — Term 1 · 2026</div><button class="btn bg" onclick="subMarks()"><i class="fas fa-check"></i> Submit Marks</button></div>
+    ${buildTabs(ALL_CLASSES,'All','renderMFClass')}<div id="mfBody"></div></div>`;
+    window.renderMFClass=renderMF;renderMF('All');
+    window.rcMark=(sid)=>{const vs=SUBJECTS.map(sub=>parseFloat(document.getElementById(`m-${sid}-${sub.id}`)?.value)||null).filter(v=>v!==null&&!isNaN(v));const avg=vs.length?Math.round(vs.reduce((a,b)=>a+b,0)/vs.length):0;const el=document.getElementById(`mavg-${sid}`);const gel=document.getElementById(`mgrade-${sid}`);if(el)el.textContent=avg?avg+'%':'—';if(gel&&avg)gel.innerHTML=gradeBadge(avg);};
+    window.subMarks=async()=>{const entries=[];(window._mfStus||stus).forEach(s=>{SUBJECTS.forEach(sub=>{const v=parseFloat(document.getElementById(`m-${s.id}-${sub.id}`)?.value);if(!isNaN(v)&&v>=0)entries.push({student_id:s.id,subject_id:sub.id,term:1,year:2026,score:v});});});try{await Marks.submit(entries);toast(`${entries.length} marks saved!`);}catch(e){toast(e.message,true);}};
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function tResults(c){
+  try{
+    const marks=await Marks.list({term:1,year:2026});
+    const byS={};marks.forEach(m=>{if(!byS[m.student_name])byS[m.student_name]={s:[],cls:m.class_name};byS[m.student_name].s.push(m);});
+    const allCls=['All',...new Set(marks.map(m=>m.class_name).filter(Boolean))];
+    function renderRes(cls){
+      const ents=Object.entries(byS).filter(([n,d])=>cls==='All'||d.cls===cls);
+      document.getElementById('resBody').innerHTML=ents.length?ents.map(([name,d])=>{const avg=Math.round(d.s.reduce((a,x)=>a+parseFloat(x.score),0)/d.s.length);return`<div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--bd)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><strong style="color:var(--f)">${name} <span style="font-size:10.5px;color:var(--tmu);font-weight:400">${d.cls||''}</span></strong><div>${gradeBadge(avg)}</div></div>${d.s.map(x=>`<div class="sr"><span class="sl" style="font-size:11.5px">${x.subject_name}</span><div class="sb"><div class="sf" style="width:${x.score}%;background:${scoreColor(x.score)}"></div></div><span class="sn">${x.score}</span></div>`).join('')}</div>`;}).join(''):'<div style="color:var(--tmu);text-align:center;padding:24px">No results for this class.</div>';
+    }
+    c.innerHTML=`${buildTabs(allCls.slice(1),'All','renderResClass')}<div class="card"><div id="resBody"></div></div>`;
+    window.renderResClass=renderRes;renderRes('All');
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function tReportCards(c){
+  try{
+    const stus=await Students.list();
+    function renderRC(cls){const f=cls==='All'?stus:stus.filter(s=>s.class_name===cls);document.getElementById('tRCBody').innerHTML=stuTable(f,true);}
+    c.innerHTML=`<div class="card" style="background:var(--f);color:#fff;margin-bottom:14px;padding:14px 16px"><div style="font-size:13px;font-weight:700;color:var(--g)">Generate Report Cards — Term 1 2026</div><div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:3px">Click the <i class="fas fa-file-invoice"></i> icon to generate a student's report card.</div></div>
+    ${buildTabs(ALL_CLASSES,'All','renderTRCClass')}<div class="card"><div id="tRCBody">${stuTable(stus,true)}</div></div>`;
+    window.renderTRCClass=renderRC;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+function tTimetable(c){
+  const times=['8:00–9:00','9:00–10:00','10:30–11:30','11:30–12:30','2:00–3:00','3:00–4:00'];
+  const days=['Mon','Tue','Wed','Thu','Fri'];
+  const mine={Mon:['P7A Maths','','','','',''],Tue:['','P7A Maths','','','',''],Wed:['P7A Maths','','','','','P7A Maths'],Thu:['','','P7A Maths','','',''],Fri:['P7A Maths','','','P7A Maths','','']};
+  c.innerHTML=`<div class="card"><div class="card-hd">My Teaching Timetable</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="padding:8px 11px;text-align:left;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd)">Period</th>${days.map(d=>`<th style="padding:8px 11px;text-align:center;font-size:10px;color:var(--tmu);border-bottom:1.5px solid var(--bd)">${d}</th>`).join('')}</tr></thead><tbody>${times.map((t,ti)=>`<tr><td style="padding:7px 11px;font-size:11px;color:var(--tmu);font-weight:600;border-bottom:1px solid var(--bd)">${t}</td>${days.map(d=>{const s=mine[d]?.[ti];return`<td style="padding:4px;border-bottom:1px solid var(--bd)">${s?`<div class="tt-cell">${s}</div>`:''}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+}
+async function tNotices(c){await noticesPage(c);}
+async function tEvents(c){await eventsPage(c);}
+
+/* ══════════════════════ STUDENT PAGES ══════════════════════ */
+async function sDash(c){
+  try{
+    const[stus,marks,fees,notices]=await Promise.all([Students.list(),Marks.list({term:1,year:2026}),Fees.list({term:1,year:2026}),Notices.list()]);
+    const me=stus[0]||{};const mf=fees[0]||{};
+    const avg=marks.length?Math.round(marks.reduce((a,m)=>a+parseFloat(m.score),0)/marks.length):0;
+    const g=getGrade(avg);
+    c.innerHTML=`<div style="background:var(--f);border-radius:var(--rl);padding:22px;margin-bottom:14px;display:flex;align-items:center;gap:18px">
+      <div class="av" style="width:70px;height:70px;font-size:22px;background:var(--g);color:var(--f);border:none;flex-shrink:0">${getAvatar(me.id,me.full_name||'S')}</div>
+      <div><div style="font-size:19px;font-weight:700;color:#fff">${me.full_name||'Student'}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px">${me.class_name||''} · Roll: ${me.roll_number||'—'}</div>
+      <div style="display:flex;gap:6px;margin-top:8px"><span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--g);font-size:10px;font-weight:600;padding:3px 9px;border-radius:50px">${me.status||'Active'}</span><span style="background:${g.bg};color:${g.color};font-size:10px;font-weight:600;padding:3px 9px;border-radius:50px">${g.label}</span></div></div>
+    </div>
+    <div class="sg s3"><div class="sc"><div class="stl">My Average</div><div class="stv" style="color:${g.color}">${avg}%</div><div class="sts">${g.label}</div></div><div class="sc"><div class="stl">Subjects</div><div class="stv">${marks.length}</div></div><div class="sc"><div class="stl">Fee Balance</div><div class="stv" style="font-size:16px;color:${mf.balance>0?'#9b2626':'#1a6b3c'}">${fmtUGX(mf.balance||0)}</div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:14px">
+      <div class="card"><div class="card-hd">My Score Breakdown</div>${marks.map(m=>`<div class="sr"><span class="sl" style="font-size:11.5px">${m.subject_name}</span><div class="sb"><div class="sf" style="width:${m.score}%;background:${scoreColor(m.score)}"></div></div><span class="sn">${m.score}</span>${gradeBadge(m.score)}</div>`).join('')||'<div style="color:var(--tmu)">No marks yet.</div>'}</div>
+      <div class="card"><div class="card-hd">Notices</div>${notices.slice(0,3).map(n=>`<div class="notice"><div class="notice-title">${n.title}</div><div class="notice-date">${new Date(n.created_at).toDateString()}</div></div>`).join('')}</div>
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function sResults(c){
+  try{
+    const marks=await Marks.list({term:1,year:2026});
+    const avg=marks.length?Math.round(marks.reduce((a,m)=>a+parseFloat(m.score),0)/marks.length):0;
+    const g=getGrade(avg);
+    c.innerHTML=`<div class="sg s3"><div class="sc"><div class="stl">Average</div><div class="stv" style="color:${g.color}">${avg}%</div></div><div class="sc"><div class="stl">Grade</div><div class="stv">${g.label}</div></div><div class="sc"><div class="stl">Subjects</div><div class="stv">${marks.length}</div></div></div>
+    <div class="card"><div class="card-hd">My Results — Term 1 2026 ${gradeBadge(avg)}</div>
+      ${marks.map(m=>`<div class="sr"><span class="sl" style="font-size:11.5px">${m.subject_name}</span><div class="sb"><div class="sf" style="width:${m.score}%;background:${scoreColor(m.score)}"></div></div><span class="sn">${m.score}</span>${gradeBadge(m.score)}</div>`).join('')||'<div style="color:var(--tmu)">No results yet.</div>'}
+      ${marks.length?`<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10.5px;color:var(--tmu)">Overall</div><div style="font-size:26px;font-weight:700;color:${g.color}">${avg}%</div></div>${gradeBadge(avg)}</div>`:''}
+    </div>
+    <div class="card"><div class="card-hd">Grading Scale</div>
+      ${GRADING.map(gd=>`<div class="ir"><span class="irl">${gd.min}–${gd.max}%</span><span class="badge" style="background:${gd.bg};color:${gd.color}">${gd.label}</span></div>`).join('')}
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function sAttendance(c){
+  try{const att=await Attendance.list();const p=att.filter(a=>a.status==='Present').length,t=att.length,r=t?Math.round(p/t*100):0;c.innerHTML=`<div class="sg s3"><div class="sc"><div class="stl">Present</div><div class="stv" style="color:#1a6b3c">${p}</div></div><div class="sc"><div class="stl">Absent</div><div class="stv" style="color:#9b2626">${att.filter(a=>a.status==='Absent').length}</div></div><div class="sc"><div class="stl">Rate</div><div class="stv">${r}%</div><div class="prog" style="margin-top:5px"><div class="prog-f" style="width:${r}%"></div></div></div></div><div class="card"><div class="card-hd">Attendance Records</div>${t?`<div class="tw"><table><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody>${att.map(a=>`<tr><td>${new Date(a.date).toDateString()}</td><td><span class="badge ${a.status==='Present'?'bg-green':a.status==='Late'?'bg-amber':'bg-red'}">${a.status}</span></td></tr>`).join('')}</tbody></table></div>`:'<div style="color:var(--tmu);text-align:center;padding:24px">No records found.</div>'}</div>`;}
+  catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+async function sFees(c){
+  try{const fees=await Fees.list({term:1,year:2026});const f=fees[0]||{};c.innerHTML=`<div class="card"><div style="background:var(--f);border-radius:var(--rl);padding:18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase">Fee Status — Term 1 2026</div><div style="font-size:28px;font-weight:700;color:var(--g);margin-top:3px">${fmtUGX(f.amount_due||0)}</div></div><span class="badge ${fBadge(f.status||'Unpaid')}" style="font-size:12px;padding:7px 16px">${f.status||'Unpaid'}</span></div><div class="ir"><span class="irl">Amount Due</span><span class="irv">${fmtUGX(f.amount_due)}</span></div><div class="ir"><span class="irl">Amount Paid</span><span class="irv" style="color:#1a6b3c">${fmtUGX(f.amount_paid)}</span></div><div class="ir"><span class="irl">Balance</span><span class="irv" style="color:${f.balance>0?'#9b2626':'#1a6b3c'}">${fmtUGX(f.balance)}</span></div><div class="ir"><span class="irl">Mode</span><span class="irv">${f.payment_mode||'—'}</span></div></div>`;}
+  catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+async function sNotices(c){await noticesPage(c);}
+async function sEvents(c){await eventsPage(c);}
+
+async function sProfile(c){
+  try{const stus=await Students.list();const me=stus[0]||{};c.innerHTML=`<div style="background:var(--f);border-radius:var(--rl);padding:22px;margin-bottom:14px;display:flex;align-items:center;gap:18px"><div class="av" style="width:70px;height:70px;font-size:22px;background:var(--g);color:var(--f);border:none">${getAvatar(me.id,me.full_name||'')}</div><div><div style="font-size:19px;font-weight:700;color:#fff">${me.full_name||'—'}</div><div style="font-size:12px;color:rgba(255,255,255,.5)">${me.class_name||''} · Roll: ${me.roll_number||'—'}</div><button class="btn bg btn-sm" style="margin-top:9px" onclick="uploadPhoto(${me.id||0},'${(me.full_name||'').replace(/'/g,"\\'")}')"><i class="fas fa-camera"></i> Update Photo</button></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div class="card"><div class="card-hd">Personal Details</div><div class="ir"><span class="irl">Full Name</span><span class="irv">${me.full_name||'—'}</span></div><div class="ir"><span class="irl">Date of Birth</span><span class="irv">${me.dob?new Date(me.dob).toDateString():'—'}</span></div><div class="ir"><span class="irl">Gender</span><span class="irv">${me.gender||'—'}</span></div><div class="ir"><span class="irl">Class</span><span class="irv">${me.class_name||'—'}</span></div><div class="ir"><span class="irl">Roll No.</span><span class="irv">${me.roll_number||'—'}</span></div></div><div class="card"><div class="card-hd">Guardian Info</div><div class="ir"><span class="irl">Name</span><span class="irv">${me.guardian_name||'—'}</span></div><div class="ir"><span class="irl">Phone</span><span class="irv">${me.guardian_phone||'—'}</span></div><div class="ir"><span class="irl">Email</span><span class="irv">${me.guardian_email||'—'}</span></div><div class="ir"><span class="irl">Address</span><span class="irv">${me.address||'—'}</span></div></div></div>`;}
+  catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+
+/* ══════════════════════ PARENT PORTAL ══════════════════════ */
+async function pDash(c){
+  try{
+    const[stus,marks,fees]=await Promise.all([Students.list(),Marks.list({term:1,year:2026}),Fees.list({term:1,year:2026})]);
+    const child=stus[0]||{};const mf=fees[0]||{};
+    const avg=marks.length?Math.round(marks.reduce((a,m)=>a+parseFloat(m.score),0)/marks.length):0;
+    const g=getGrade(avg);
+    c.innerHTML=`<div class="parent-hero">
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Parent Portal</div>
+      <div style="font-size:22px;font-weight:700;color:#fff">Welcome, Mrs. Sarah Kato</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px">Monitoring <strong style="color:var(--g)">${child.full_name||'Your Child'}</strong> · ${child.class_name||''}</div>
+    </div>
+    <div class="sg s3"><div class="sc"><div class="stl">Academic Average</div><div class="stv" style="color:${g.color}">${avg}%</div><div class="sts">${g.label}</div></div><div class="sc"><div class="stl">Fee Balance</div><div class="stv" style="font-size:16px;color:${mf.balance>0?'#9b2626':'#1a6b3c'}">${fmtUGX(mf.balance||0)}</div></div><div class="sc"><div class="stl">Fee Status</div><div class="stv" style="font-size:18px">${mf.status||'—'}</div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card"><div class="card-hd">Child's Progress — Term 1 2026</div>${marks.map(m=>`<div class="sr"><span class="sl" style="font-size:11.5px">${m.subject_name}</span><div class="sb"><div class="sf" style="width:${m.score}%;background:${scoreColor(m.score)}"></div></div><span class="sn">${m.score}</span>${gradeBadge(m.score)}</div>`).join('')||'<div style="color:var(--tmu)">Results not yet available.</div>'}</div>
+      <div class="card"><div class="card-hd">Child's Profile</div>
+        <div class="ir"><span class="irl">Name</span><span class="irv">${child.full_name||'—'}</span></div>
+        <div class="ir"><span class="irl">Class</span><span class="irv">${child.class_name||'—'}</span></div>
+        <div class="ir"><span class="irl">Roll No.</span><span class="irv">${child.roll_number||'—'}</span></div>
+        <div class="ir"><span class="irl">Status</span><span class="irv"><span class="badge bg-green">${child.status||'Active'}</span></span></div>
+        <div style="margin-top:12px"><button class="btn bg" onclick="genReport(${child.id||1},'${(child.full_name||'Student').replace(/'/g,"\\'")}')"><i class="fas fa-file-invoice"></i> View Report Card</button></div>
+      </div>
+    </div>`;
+  }catch(e){c.innerHTML=`<div class="loader">Error: ${e.message}</div>`;}
+}
+async function pResults(c){await sResults(c);}
+async function pAttendance(c){await sAttendance(c);}
+async function pFees(c){await sFees(c);}
+async function pNotices(c){await noticesPage(c);}
+async function pEvents(c){await eventsPage(c);}
+
+/* ══════════════════════ ACTIONS ══════════════════════ */
+function openAddStu(){
+  openModal('Add New Student',`<div class="fg fg2">
+    <div class="ff"><label>First Name</label><input id="sfn" placeholder="Oliver"></div>
+    <div class="ff"><label>Last Name</label><input id="sln" placeholder="Kato"></div>
+    <div class="ff"><label>Roll Number</label><input id="sroll" placeholder="011"></div>
+    <div class="ff"><label>Class</label><select id="scls">${[1,2,3,4,5,6,7,8].map(i=>`<option value="${i}">Class ${i}</option>`).join('')}</select></div>
+    <div class="ff"><label>Gender</label><select id="sgen"><option>Male</option><option>Female</option></select></div>
+    <div class="ff"><label>Date of Birth</label><input id="sdob" type="date"></div>
+    <div class="ff"><label>Guardian Name</label><input id="sgn" placeholder="Full name"></div>
+    <div class="ff"><label>Guardian Phone</label><input id="sgp" placeholder="+256 7XX XXX XXX"></div>
+    <div class="ff" style="grid-column:span 2"><label>Address</label><input id="sadr" placeholder="Area, City"></div>
+  </div><div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="saveStu()"><i class="fas fa-save"></i> Save Student</button></div>`);
+}
+async function saveStu(){try{await Students.create({full_name:document.getElementById('sfn').value+' '+document.getElementById('sln').value,roll_number:document.getElementById('sroll').value,class_id:parseInt(document.getElementById('scls').value),gender:document.getElementById('sgen').value,dob:document.getElementById('sdob').value||null,guardian_name:document.getElementById('sgn').value,guardian_phone:document.getElementById('sgp').value,address:document.getElementById('sadr').value});closeModal();toast('Student added!');navTo('aStudents','Students');}catch(e){toast(e.message,true);}}
+async function delStu(id,name){if(!confirm(`Delete ${name}?`))return;try{await Students.delete(id);toast('Deleted.');navTo('aStudents','Students');}catch(e){toast(e.message,true);}}
+
+function openAddTeach(){openModal('Add New Teacher',`<div class="fg fg2"><div class="ff" style="grid-column:span 2"><label>Full Name</label><input id="tfn" placeholder="Mr. Musisi Obed"></div><div class="ff"><label>Email</label><input id="tem" type="email" placeholder="teacher@visionary.ug"></div><div class="ff"><label>Password</label><input id="tpw" type="password" placeholder="Set a password"></div><div class="ff"><label>Phone</label><input id="tph" placeholder="+256 7XX XXX XXX"></div><div class="ff"><label>Subject</label><select id="tsub"><option>Mathematics</option><option>English Language</option><option>Science</option><option>Social Studies</option><option>Luganda</option><option>Religious Education</option></select></div></div><div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="saveTeach()"><i class="fas fa-save"></i> Save</button></div>`);}
+async function saveTeach(){try{await Teachers.create({full_name:document.getElementById('tfn').value,email:document.getElementById('tem').value,password:document.getElementById('tpw').value,phone:document.getElementById('tph').value,subject:document.getElementById('tsub').value});closeModal();toast('Teacher added!');navTo('aTeachers','Teachers');}catch(e){toast(e.message,true);}}
+async function delTeach(id,name){if(!confirm(`Remove ${name}?`))return;try{await Teachers.delete(id);toast('Removed.');navTo('aTeachers','Teachers');}catch(e){toast(e.message,true);}}
+
+function recPay(sid,name){openModal(`Record Payment — ${name}`,`<div class="fg fg2"><div class="ff"><label>Amount (UGX)</label><input id="pamt" type="number" placeholder="450000"></div><div class="ff"><label>Mode</label><select id="pmode"><option>Mobile Money</option><option>Bank Transfer</option><option>Cash</option></select></div></div><div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="savePay(${sid})"><i class="fas fa-save"></i> Record</button></div>`);}
+async function savePay(sid){try{await Fees.recordPayment({student_id:sid,term:1,year:2026,amount_paid:parseInt(document.getElementById('pamt').value),payment_mode:document.getElementById('pmode').value});closeModal();toast('Payment recorded!');navTo('aFees','Fees Management');}catch(e){toast(e.message,true);}}
+
+function prtR(sid,name,due,paid,bal,status,cls,mode){
+  openModal('Payment Receipt',`<div class="receipt"><div class="r-hd"><div class="r-logo">Visionary Junior School</div><div class="r-sub">Kakindu–Masaka Road, Uganda</div><div style="margin-top:9px;font-size:13px;font-weight:700;color:var(--f)">OFFICIAL FEE RECEIPT</div><div style="font-size:10.5px;color:var(--tmu)">Receipt #VSC-${sid}-2026-T1 · ${new Date().toDateString()}</div></div><div class="r-row"><span style="color:var(--tmu)">Student</span><span style="font-weight:600">${name}</span></div><div class="r-row"><span style="color:var(--tmu)">Class</span><span>${cls}</span></div><div class="r-row"><span style="color:var(--tmu)">Term</span><span>Term 1 · 2026</span></div><div class="r-row"><span style="color:var(--tmu)">Amount Due</span><span>${fmtUGX(due)}</span></div><div class="r-row"><span style="color:var(--tmu)">Amount Paid</span><span style="color:#1a6b3c;font-weight:600">${fmtUGX(paid)}</span></div><div class="r-row r-total"><span>Balance</span><span style="color:${bal>0?'#9b2626':'#1a6b3c'}">${fmtUGX(bal)}</span></div><div class="r-row"><span style="color:var(--tmu)">Mode</span><span>${mode||'—'}</span></div><div class="r-row"><span style="color:var(--tmu)">Status</span><span class="badge ${fBadge(status)}">${status}</span></div><div class="r-stamp"><div style="font-size:11px;color:var(--tmu)">Official receipt · Visionary Junior School</div></div></div><div class="fa mo-footer"><button class="btn bo" onclick="closeModal()">Close</button><button class="btn bg" onclick="window.print()"><i class="fas fa-print"></i> Print</button></div>`);
+}
+
+function openSMS(type,count){openModal('Send SMS Reminders',`<div style="margin-bottom:14px;padding:12px;background:var(--cr);border-radius:var(--r);border-left:3px solid var(--g)"><div style="font-weight:700;color:var(--f)">Sending to ${count} guardian(s)</div></div><div class="ff" style="margin-bottom:14px"><label>Message</label><textarea style="padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--cr);outline:none;min-height:90px">${type==='unpaid'?"Dear Parent, your child's fees of UGX [AMOUNT] for Term 1 2026 are outstanding. Please pay before 31st March. — Visionary School":"Dear Parent, your child has an outstanding balance for Term 1 2026. Please clear it soon. — Visionary School"}</textarea></div><div class="fa"><button class="btn bo" onclick="closeModal()">Cancel</button><button class="btn bg" onclick="closeModal();toast('SMS sent to ${count} guardians!')"><i class="fas fa-paper-plane"></i> Send Now</button></div>`);}
+
+async function postNotice(){const t=document.getElementById('ntitle')?.value,b=document.getElementById('nbody')?.value,a=document.getElementById('naud')?.value;if(!t||!b){toast('Title and message required.',true);return;}try{await Notices.create({title:t,body:b,audience:a});toast('Notice posted!');loadNotifs();navTo('aNotices','Notice Board');}catch(e){toast(e.message,true);}}
+async function delNotice(id){try{await Notices.delete(id);toast('Deleted.');navTo('aNotices','Notice Board');}catch(e){toast(e.message,true);}}
+
+/* ══════════════════════ BOOT ══════════════════════ */
+window.onload=()=>{
+  if(Auth.isLoggedIn()){
+    const u=Auth.currentUser();
+    if(u){document.getElementById('loginScreen').style.display='none';document.getElementById('appShell').style.display='block';buildShell(u);loadNotifs();}
+  }
+};
+</script>
+</body>
+</html>
