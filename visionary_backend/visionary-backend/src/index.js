@@ -12,7 +12,14 @@ const {
 const app = express();
 
 // ── MIDDLEWARE ──────────────────────────────────────────────
-app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
+app.use(cors({
+  origin: [
+    'https://radiant-duckanoo-265850.netlify.app',
+    process.env.CLIENT_URL || 'http://localhost:3000'
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Simple request logger in development
